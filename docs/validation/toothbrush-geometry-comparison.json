@@ -1,0 +1,186 @@
+[
+  {
+    "reference": "work/evidence/toothbrush-suite012/layout-reference.stl",
+    "candidate": "work/evidence/toothbrush-suite012/native/layout_baseline.stl",
+    "bounds_error_mm": 6.102025508880615e-06,
+    "reference_volume_mm3": 166840.09605844744,
+    "candidate_volume_mm3": 166849.49648404084,
+    "relative_volume_error": 5.6343923406185614e-05,
+    "symmetric_difference_mm3": 77.39263402771516,
+    "relative_symmetric_difference": 0.0004638731087795764,
+    "reference_components": 2,
+    "candidate_components": 2,
+    "candidate_watertight": true,
+    "sampled_bidirectional_surface_error_mm": 0.0031979134233302846,
+    "surface_method": "All vertices plus 10000 deterministic surface samples per mesh; not exact Hausdorff proof",
+    "sections": [
+      {
+        "axis": 2,
+        "location_mm": 1.5,
+        "reference_loops": 21,
+        "candidate_loops": 21
+      },
+      {
+        "axis": 2,
+        "location_mm": 75,
+        "reference_loops": 4,
+        "candidate_loops": 4
+      },
+      {
+        "axis": 2,
+        "location_mm": 205,
+        "reference_loops": 2,
+        "candidate_loops": 2
+      },
+      {
+        "axis": 1,
+        "location_mm": 0.123,
+        "reference_loops": 5,
+        "candidate_loops": 5
+      }
+    ],
+    "status": "passed",
+    "case": "layout_baseline",
+    "script_sha256": "0ee8b8101230f2178b4c4d51129bd38b37bfe97cf6453894e04c12bde36eb322",
+    "reference_sha256": "e72a31c48adfd8687360bf4331743a688330d11f4397dbe599333c7b71d30f1c",
+    "candidate_sha256": "c3c0536220a629270d558f6f69a1c2a21fc7fe1e431013ce3d8782f673725a04"
+  },
+  {
+    "reference": "work/evidence/toothbrush-suite012/layout-height_resize-reference.stl",
+    "candidate": "work/evidence/toothbrush-suite012/native/layout_height_resize.stl",
+    "bounds_error_mm": 6.102025508880615e-06,
+    "reference_volume_mm3": 169666.60964130066,
+    "candidate_volume_mm3": 169675.96875520624,
+    "relative_volume_error": 5.516179008565887e-05,
+    "symmetric_difference_mm3": 80.3843629861561,
+    "relative_symmetric_difference": 0.0004737783300797964,
+    "reference_components": 2,
+    "candidate_components": 2,
+    "candidate_watertight": true,
+    "sampled_bidirectional_surface_error_mm": 0.0031979134233302846,
+    "surface_method": "All vertices plus 10000 deterministic surface samples per mesh; not exact Hausdorff proof",
+    "sections": [
+      {
+        "axis": 2,
+        "location_mm": 1.5,
+        "reference_loops": 21,
+        "candidate_loops": 21
+      },
+      {
+        "axis": 2,
+        "location_mm": 75,
+        "reference_loops": 4,
+        "candidate_loops": 4
+      },
+      {
+        "axis": 2,
+        "location_mm": 205,
+        "reference_loops": 2,
+        "candidate_loops": 2
+      },
+      {
+        "axis": 1,
+        "location_mm": 0.123,
+        "reference_loops": 5,
+        "candidate_loops": 5
+      }
+    ],
+    "status": "passed",
+    "case": "layout_height_resize",
+    "script_sha256": "0ee8b8101230f2178b4c4d51129bd38b37bfe97cf6453894e04c12bde36eb322",
+    "reference_sha256": "a6a0df7261c49af7ec34fe65ceb9abf00f7cf8d8f7c42bec1850a6adba4ca6ed",
+    "candidate_sha256": "8a515c03ea18611aa7aee224fbd4ffabc24da063b59ef200f11e342023ab4afd"
+  },
+  {
+    "reference": "work/evidence/toothbrush-suite012/body_custom-reference.stl",
+    "candidate": "work/evidence/toothbrush-suite012/native/body_custom_baseline.stl",
+    "bounds_error_mm": 6.102025508880615e-06,
+    "reference_volume_mm3": 139485.89240494117,
+    "candidate_volume_mm3": 139494.45243276827,
+    "relative_volume_error": 6.136841281590468e-05,
+    "symmetric_difference_mm3": 53.17281357998339,
+    "relative_symmetric_difference": 0.00038120567365778843,
+    "reference_components": 1,
+    "candidate_components": 1,
+    "candidate_watertight": true,
+    "sampled_bidirectional_surface_error_mm": 0.0031977336117260187,
+    "surface_method": "All vertices plus 10000 deterministic surface samples per mesh; not exact Hausdorff proof",
+    "sections": [
+      {
+        "axis": 2,
+        "location_mm": 1.5,
+        "reference_loops": 8,
+        "candidate_loops": 8
+      },
+      {
+        "axis": 2,
+        "location_mm": 75,
+        "reference_loops": 2,
+        "candidate_loops": 2
+      },
+      {
+        "axis": 2,
+        "location_mm": 205,
+        "reference_loops": 2,
+        "candidate_loops": 2
+      },
+      {
+        "axis": 1,
+        "location_mm": 0.123,
+        "reference_loops": 4,
+        "candidate_loops": 4
+      }
+    ],
+    "status": "passed",
+    "case": "body_custom_baseline",
+    "script_sha256": "11e9f7bc8834777e0f18727a0f10d3a3a49db6a99887a892489cec5f2a9e20c3",
+    "reference_sha256": "b42e17d0f5f42572ee4976fb19f09b6532a71a2385a4b9f9a2d3944580cc1af4",
+    "candidate_sha256": "008782253b739fcdbea54907ab1d5ff03c7c9b9762ba73dc775d84e3d5995d9d"
+  },
+  {
+    "reference": "work/evidence/toothbrush-suite012/assembled-reference.stl",
+    "candidate": "work/evidence/toothbrush-suite012/native/assembled_baseline.stl",
+    "bounds_error_mm": 1.2207031261368684e-05,
+    "reference_volume_mm3": 166816.89245055875,
+    "candidate_volume_mm3": 166826.53614987442,
+    "relative_volume_error": 5.781008849883606e-05,
+    "symmetric_difference_mm3": 76.88026618344398,
+    "relative_symmetric_difference": 0.0004608661931898161,
+    "reference_components": 1,
+    "candidate_components": 1,
+    "candidate_watertight": true,
+    "sampled_bidirectional_surface_error_mm": 0.0031979134233302846,
+    "surface_method": "All vertices plus 10000 deterministic surface samples per mesh; not exact Hausdorff proof",
+    "sections": [
+      {
+        "axis": 2,
+        "location_mm": 1.5,
+        "reference_loops": 20,
+        "candidate_loops": 20
+      },
+      {
+        "axis": 2,
+        "location_mm": 75,
+        "reference_loops": 2,
+        "candidate_loops": 2
+      },
+      {
+        "axis": 2,
+        "location_mm": 205,
+        "reference_loops": 4,
+        "candidate_loops": 4
+      },
+      {
+        "axis": 1,
+        "location_mm": 0.123,
+        "reference_loops": 3,
+        "candidate_loops": 3
+      }
+    ],
+    "status": "passed",
+    "case": "assembled_baseline",
+    "script_sha256": "5cc03be804f0758f855911b32d5def5282e77610fbb5cd4e87a4922780bdd81d",
+    "reference_sha256": "f0d793d0f67466618b6b87a1fb92c8a558ae5fabb39c966e6def96542e793921",
+    "candidate_sha256": "c01f3c2b28c4fe8a31023d49b9e23b7b7d64f1607f59e9dce44d6514998e36af"
+  }
+]

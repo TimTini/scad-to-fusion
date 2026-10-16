@@ -1,0 +1,77 @@
+{
+  "date": "2026-10-16",
+  "input_sha256": "68dcee6010b2ac1447bc45a723c83127197f769bfd0c90ddc4393b1d1d923f9e",
+  "packages": [
+    {
+      "name": "Bridge",
+      "files": {
+        "Bridge.manifest": "fe6a42f60a7900573f48fb44cfca449fb9e2d7c7726f6a569a7d42130a545333",
+        "Bridge.py": "3a691113e9e02315b6a1892ba9988100e0f9dc057e93abbb383a05644ff9773f",
+        "conversion-report.json": "c3d39eaac269624e446d23f8b8fed9f2fa13c4f240f39779ac8edaf468acb7b6",
+        "native-report.json": "8060abe17c3f7beab9d32fe8ef0f6bb036bb80af99a9f122dc4141f50641c508",
+        "README.md": "a4d2c6738b8103b575b7d204051ccef8bf1ebbab4909106d51ab27f501d63ed6"
+      }
+    },
+    {
+      "name": "Composite",
+      "files": {
+        "Composite.manifest": "edd84945def50ec5814cba8c6d82e43debc8a5fdac85150993e6d9356d91e034",
+        "Composite.py": "362da933ee212b86b65767f26b774738a4e9bc5e5f00ec0138d5b7c1259ab510",
+        "conversion-report.json": "57308fc1c646bccd3845560ee6d39323d0f192154eba74d66f3dd9beb82dddf5",
+        "native-report.json": "8e1d64474c8afeea782ae6f8bb392d8da24090f9d83f6cee954a254a429e9275",
+        "README.md": "3c8228dd9178824a91a16b3b6d93eb7f30f2b0f7ae8c7eeeba2fdf5aa6a5d0d6"
+      }
+    },
+    {
+      "name": "Hexagon",
+      "files": {
+        "conversion-report.json": "e9ddad79702cc3d7b164f8fea5e6d8189d1240bdbabd166c54c7e4d07c60adae",
+        "Hexagon.manifest": "088007884ec1a53f4a067e537280a2d5e54caeb34cadf032dbdf05cc89896730",
+        "Hexagon.py": "114c0a5e4959e2a169dd349fd2b1684da3a3b033be63059ba04b7bb4ef17aa00",
+        "native-report.json": "ce44fe687f9b4c069eb30b10f02517591725c2ff5d34f7ce544f10fc120a34f7",
+        "README.md": "08ddaeed7d08c2a65c65c891046fdc51aca82bd52f922af2f43bf4694c1e918d"
+      }
+    },
+    {
+      "name": "KhayBongTam",
+      "files": {
+        "conversion-report.json": "ca081647cbb0a081f119a0e1d67b1289852b151732d6643196441d222ef104c5",
+        "KhayBongTam.manifest": "558439b2ed19510cfdee6a55be132e6cab4842f4dd824f092d54b13ca23af968",
+        "KhayBongTam.py": "d6d5fa7d01e7f3d7ee27de97dcc84c1111fb1b7cbd62eb5867dd4843ca09fea9",
+        "native-report.json": "d0b2c9e84465c5c34805e56c748aa9c45d5fa08029ad5f358fc92b4f71ddb5c6",
+        "README.md": "93e5c06ea277f4b4a593a77b72047ee4e5de6dcb1d52ce0f81d2dee3946db8aa"
+      }
+    },
+    {
+      "name": "KhayBongTamHaiMoc",
+      "files": {
+        "conversion-report.json": "b33aa374df7f0622248d1829344265dacb2baa5943db96a5e52d9fdee09db26e",
+        "KhayBongTamHaiMoc.manifest": "558439b2ed19510cfdee6a55be132e6cab4842f4dd824f092d54b13ca23af968",
+        "KhayBongTamHaiMoc.py": "a06b2963d31b718bb220f4478dbc149a9ae721f8fc98c5456a2cb582b5952967",
+        "native-report.json": "0db519b55edd4c8a1d55a283a6e7d33223341ea04eb1806a3ee615bf7420b8e3",
+        "README.md": "a4c97d22f662c8db6a3278577fc40ea56c37f594d7aece79094471be93e37433"
+      }
+    },
+    {
+      "name": "Plate",
+      "files": {
+        "conversion-report.json": "6da0ac229af9e71f78936133a4648b4527895557018e969249fa75d8d44159c4",
+        "native-report.json": "a3825bffe543be3ef80438198f54889e593839bda7bd56fd26806c698a5ead38",
+        "Plate.manifest": "c90631868ef67beb6066e6e32b077aa77f74e87d51aa90faa4405f6719a016c0",
+        "Plate.py": "c364daad117ea4c22e82fbf0f6d020b64e89d6191f0f314761e90cdb9b581bd3",
+        "README.md": "6ade6728190287b256a8178259a583287a0025c26756a1e7ae81338970f965d7"
+      }
+    },
+    {
+      "name": "Renamed",
+      "files": {
+        "conversion-report.json": "41fb61243d8b7da46868c738ca28b4104feca2b65814b6178c7ed81490d8b343",
+        "native-report.json": "66e02b883c04c06e283da985e4217984d8732f5cedf18a3419e0fdae5122dff8",
+        "README.md": "be81c3caab9d6b2527d1ac493a2077667e85a80c43c03c35df0f2682c39e85cc",
+        "Renamed.manifest": "c723a7f442fdc57eddd96d9d459653104f9adf1e577bfd8ef7b9b42722ad2128",
+        "Renamed.py": "d53da2092801d93beee9a552b16890782c5d4f072d2a8c94c1c5b8aa043974dd"
+      }
+    }
+  ],
+  "native_cases": 13
+}

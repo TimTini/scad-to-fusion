@@ -1,0 +1,147 @@
+[
+  {
+    "reference": "work/evidence/final-comparison/tray_baseline-reference.stl",
+    "candidate": "work/evidence/final-native/tray_baseline.stl",
+    "bounds_error_mm": 0.0,
+    "reference_volume_mm3": 44803.00057488269,
+    "candidate_volume_mm3": 44804.21713019229,
+    "relative_volume_error": 2.7153433787817135e-05,
+    "symmetric_difference_mm3": 17.913502601014137,
+    "relative_symmetric_difference": 0.00039982818943284676,
+    "candidate_components": 1,
+    "candidate_watertight": true,
+    "sampled_bidirectional_surface_error_mm": 0.00963331989532428,
+    "surface_method": "All vertices plus 10000 deterministic surface samples per mesh; not exact Hausdorff proof",
+    "sections": [
+      {
+        "axis": 2,
+        "location_mm": 1.5,
+        "reference_loops": 36,
+        "candidate_loops": 36
+      },
+      {
+        "axis": 1,
+        "location_mm": 68.5,
+        "reference_loops": 2,
+        "candidate_loops": 2
+      }
+    ],
+    "status": "passed"
+  },
+  {
+    "reference": "work/evidence/final-comparison/tray_one-reference.stl",
+    "candidate": "work/evidence/final-native/tray_one.stl",
+    "bounds_error_mm": 0.0,
+    "reference_volume_mm3": 14244.35208920387,
+    "candidate_volume_mm3": 14250.052417165798,
+    "relative_volume_error": 0.0004001816247049913,
+    "symmetric_difference_mm3": 13.428555148479518,
+    "relative_symmetric_difference": 0.0009427283925856716,
+    "candidate_components": 1,
+    "candidate_watertight": true,
+    "sampled_bidirectional_surface_error_mm": 0.009632995996957227,
+    "surface_method": "All vertices plus 10000 deterministic surface samples per mesh; not exact Hausdorff proof",
+    "sections": [
+      {
+        "axis": 2,
+        "location_mm": 1.5,
+        "reference_loops": 2,
+        "candidate_loops": 2
+      },
+      {
+        "axis": 1,
+        "location_mm": 19.5,
+        "reference_loops": 2,
+        "candidate_loops": 2
+      }
+    ],
+    "status": "passed"
+  },
+  {
+    "reference": "work/evidence/final-comparison/tray_resize-reference.stl",
+    "candidate": "work/evidence/final-native/tray_resize.stl",
+    "bounds_error_mm": 0.0,
+    "reference_volume_mm3": 82503.34692189044,
+    "candidate_volume_mm3": 82498.10137652805,
+    "relative_volume_error": 6.357978867633674e-05,
+    "symmetric_difference_mm3": 24.378241358645028,
+    "relative_symmetric_difference": 0.00029548184732099397,
+    "candidate_components": 1,
+    "candidate_watertight": true,
+    "sampled_bidirectional_surface_error_mm": 0.009639454848413642,
+    "surface_method": "All vertices plus 10000 deterministic surface samples per mesh; not exact Hausdorff proof",
+    "sections": [
+      {
+        "axis": 2,
+        "location_mm": 1.5,
+        "reference_loops": 85,
+        "candidate_loops": 85
+      },
+      {
+        "axis": 1,
+        "location_mm": 98.5,
+        "reference_loops": 2,
+        "candidate_loops": 2
+      }
+    ],
+    "status": "passed"
+  },
+  {
+    "reference": "work/evidence/final-comparison/two_baseline-reference.stl",
+    "candidate": "work/evidence/final-native/two_baseline.stl",
+    "bounds_error_mm": 0.0,
+    "reference_volume_mm3": 43058.48227434779,
+    "candidate_volume_mm3": 43059.21525896594,
+    "relative_volume_error": 1.7023001727635036e-05,
+    "symmetric_difference_mm3": 18.030744573324533,
+    "relative_symmetric_difference": 0.0004187501189299094,
+    "candidate_components": 1,
+    "candidate_watertight": true,
+    "sampled_bidirectional_surface_error_mm": 0.00963331989532428,
+    "surface_method": "All vertices plus 10000 deterministic surface samples per mesh; not exact Hausdorff proof",
+    "sections": [
+      {
+        "axis": 2,
+        "location_mm": 1.5,
+        "reference_loops": 36,
+        "candidate_loops": 36
+      },
+      {
+        "axis": 1,
+        "location_mm": 68.5,
+        "reference_loops": 3,
+        "candidate_loops": 3
+      }
+    ],
+    "status": "passed"
+  },
+  {
+    "reference": "work/evidence/final-comparison/two_resize-reference.stl",
+    "candidate": "work/evidence/final-native/two_resize.stl",
+    "bounds_error_mm": 0.0,
+    "reference_volume_mm3": 59964.746089452994,
+    "candidate_volume_mm3": 59962.84147638531,
+    "relative_volume_error": 3.176221349867468e-05,
+    "symmetric_difference_mm3": 20.669924294459634,
+    "relative_symmetric_difference": 0.0003447012727048835,
+    "candidate_components": 1,
+    "candidate_watertight": true,
+    "sampled_bidirectional_surface_error_mm": 0.009639454848413642,
+    "surface_method": "All vertices plus 10000 deterministic surface samples per mesh; not exact Hausdorff proof",
+    "sections": [
+      {
+        "axis": 2,
+        "location_mm": 1.5,
+        "reference_loops": 56,
+        "candidate_loops": 56
+      },
+      {
+        "axis": 1,
+        "location_mm": 68.5,
+        "reference_loops": 3,
+        "candidate_loops": 3
+      }
+    ],
+    "status": "passed"
+  }
+]

@@ -1,0 +1,703 @@
+[
+  {
+    "status": "passed",
+    "fusion_version": "2705.1.30",
+    "bodies": [
+      {
+        "solid": true,
+        "bounds_mm": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            100.0,
+            70.0,
+            47.0
+          ]
+        ],
+        "volume_mm3": 44804.25657074373
+      }
+    ],
+    "timeline_count": 24,
+    "patterns": [
+      {
+        "name": "SCAD range pattern 1",
+        "count_x": 7.0,
+        "count_y": 5.0,
+        "spacing_one_cm": 1.2000000000000002,
+        "spacing_two_cm": 1.2000000000000002
+      }
+    ],
+    "sketches": [
+      {
+        "name": "SCAD profile 1",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 2",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 3",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 4",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 5",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 6",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 7",
+        "fully_constrained": true
+      }
+    ],
+    "case": "tray",
+    "variant": "baseline",
+    "script_sha256": "d6d5fa7d01e7f3d7ee27de97dcc84c1111fb1b7cbd62eb5867dd4843ca09fea9"
+  },
+  {
+    "status": "passed",
+    "fusion_version": "2705.1.30",
+    "bodies": [
+      {
+        "solid": true,
+        "bounds_mm": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            160.0,
+            100.00000000000001,
+            50.0
+          ]
+        ],
+        "volume_mm3": 82497.92949004406
+      }
+    ],
+    "timeline_count": 24,
+    "patterns": [
+      {
+        "name": "SCAD range pattern 1",
+        "count_x": 12.0,
+        "count_y": 7.0,
+        "spacing_one_cm": 1.2000000000000002,
+        "spacing_two_cm": 1.2000000000000002
+      }
+    ],
+    "sketches": [
+      {
+        "name": "SCAD profile 1",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 2",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 3",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 4",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 5",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 6",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 7",
+        "fully_constrained": true
+      }
+    ],
+    "case": "tray",
+    "variant": "resize",
+    "script_sha256": "d6d5fa7d01e7f3d7ee27de97dcc84c1111fb1b7cbd62eb5867dd4843ca09fea9"
+  },
+  {
+    "status": "passed",
+    "fusion_version": "2705.1.30",
+    "bodies": [
+      {
+        "solid": true,
+        "bounds_mm": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            52.0,
+            20.999999999999996,
+            47.0
+          ]
+        ],
+        "volume_mm3": 14250.238626739285
+      }
+    ],
+    "timeline_count": 24,
+    "patterns": [
+      {
+        "name": "SCAD range pattern 1",
+        "count_x": 1.0,
+        "count_y": 1.0,
+        "spacing_one_cm": 3.9999999999999996,
+        "spacing_two_cm": 4.0
+      }
+    ],
+    "sketches": [
+      {
+        "name": "SCAD profile 1",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 2",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 3",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 4",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 5",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 6",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 7",
+        "fully_constrained": true
+      }
+    ],
+    "case": "tray",
+    "variant": "one",
+    "script_sha256": "d6d5fa7d01e7f3d7ee27de97dcc84c1111fb1b7cbd62eb5867dd4843ca09fea9"
+  },
+  {
+    "status": "passed",
+    "fusion_version": "2705.1.30",
+    "bodies": [
+      {
+        "solid": true,
+        "bounds_mm": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            100.0,
+            70.0,
+            30.0
+          ]
+        ],
+        "volume_mm3": 43059.23889803836
+      }
+    ],
+    "timeline_count": 15,
+    "patterns": [
+      {
+        "name": "SCAD range pattern 1",
+        "count_x": 7.0,
+        "count_y": 5.0,
+        "spacing_one_cm": 1.2000000000000002,
+        "spacing_two_cm": 1.2000000000000002
+      }
+    ],
+    "sketches": [
+      {
+        "name": "SCAD profile 1",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 2",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 3",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 4",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 5",
+        "fully_constrained": true
+      }
+    ],
+    "case": "two",
+    "variant": "baseline",
+    "script_sha256": "a06b2963d31b718bb220f4478dbc149a9ae721f8fc98c5456a2cb582b5952967"
+  },
+  {
+    "status": "passed",
+    "fusion_version": "2705.1.30",
+    "bodies": [
+      {
+        "solid": true,
+        "bounds_mm": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            150.00000000000003,
+            70.0,
+            30.0
+          ]
+        ],
+        "volume_mm3": 59962.77886509982
+      }
+    ],
+    "timeline_count": 15,
+    "patterns": [
+      {
+        "name": "SCAD range pattern 1",
+        "count_x": 11.0,
+        "count_y": 5.0,
+        "spacing_one_cm": 1.2000000000000002,
+        "spacing_two_cm": 1.2000000000000002
+      }
+    ],
+    "sketches": [
+      {
+        "name": "SCAD profile 1",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 2",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 3",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 4",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 5",
+        "fully_constrained": true
+      }
+    ],
+    "case": "two",
+    "variant": "resize",
+    "script_sha256": "a06b2963d31b718bb220f4478dbc149a9ae721f8fc98c5456a2cb582b5952967"
+  },
+  {
+    "status": "passed",
+    "fusion_version": "2705.1.30",
+    "bodies": [
+      {
+        "solid": true,
+        "bounds_mm": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            10.0,
+            10.0,
+            2.0
+          ]
+        ],
+        "volume_mm3": 192.00000000000003
+      },
+      {
+        "solid": true,
+        "bounds_mm": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            1.0,
+            1.0,
+            2.0
+          ]
+        ],
+        "volume_mm3": 2.000000000000001
+      }
+    ],
+    "timeline_count": 7,
+    "patterns": [],
+    "sketches": [
+      {
+        "name": "SCAD profile 1",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 2",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 3",
+        "fully_constrained": true
+      }
+    ],
+    "case": "composite",
+    "variant": "baseline",
+    "script_sha256": "362da933ee212b86b65767f26b774738a4e9bc5e5f00ec0138d5b7c1259ab510"
+  },
+  {
+    "status": "passed",
+    "fusion_version": "2705.1.30",
+    "bodies": [
+      {
+        "solid": true,
+        "bounds_mm": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            6.0,
+            2.0,
+            2.0
+          ]
+        ],
+        "volume_mm3": 24.0
+      }
+    ],
+    "timeline_count": 8,
+    "patterns": [],
+    "sketches": [
+      {
+        "name": "SCAD profile 1",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 2",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 3",
+        "fully_constrained": true
+      }
+    ],
+    "case": "bridge",
+    "variant": "baseline",
+    "script_sha256": "3a691113e9e02315b6a1892ba9988100e0f9dc057e93abbb383a05644ff9773f"
+  },
+  {
+    "status": "passed",
+    "fusion_version": "2705.1.30",
+    "bodies": [
+      {
+        "solid": true,
+        "bounds_mm": [
+          [
+            -4.0,
+            -3.4641016151377535,
+            0.0
+          ],
+          [
+            4.0,
+            3.4641016151377544,
+            3.0000000000000004
+          ]
+        ],
+        "volume_mm3": 124.70765814495918
+      }
+    ],
+    "timeline_count": 2,
+    "patterns": [],
+    "sketches": [
+      {
+        "name": "SCAD profile 1",
+        "fully_constrained": true
+      }
+    ],
+    "case": "hexagon",
+    "variant": "baseline",
+    "script_sha256": "114c0a5e4959e2a169dd349fd2b1684da3a3b033be63059ba04b7bb4ef17aa00"
+  },
+  {
+    "status": "passed",
+    "fusion_version": "2705.1.30",
+    "bodies": [
+      {
+        "solid": true,
+        "bounds_mm": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            100.0,
+            70.0,
+            47.0
+          ]
+        ],
+        "volume_mm3": 44804.25657074373
+      }
+    ],
+    "timeline_count": 24,
+    "patterns": [
+      {
+        "name": "SCAD range pattern 1",
+        "count_x": 7.0,
+        "count_y": 5.0,
+        "spacing_one_cm": 1.2000000000000002,
+        "spacing_two_cm": 1.2000000000000002
+      }
+    ],
+    "sketches": [
+      {
+        "name": "SCAD profile 1",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 2",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 3",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 4",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 5",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 6",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 7",
+        "fully_constrained": true
+      }
+    ],
+    "case": "renamed",
+    "variant": "baseline",
+    "script_sha256": "d53da2092801d93beee9a552b16890782c5d4f072d2a8c94c1c5b8aa043974dd"
+  },
+  {
+    "status": "passed",
+    "fusion_version": "2705.1.30",
+    "bodies": [
+      {
+        "solid": true,
+        "bounds_mm": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            160.0,
+            100.00000000000001,
+            47.0
+          ]
+        ],
+        "volume_mm3": 82227.92949004406
+      }
+    ],
+    "timeline_count": 24,
+    "patterns": [
+      {
+        "name": "SCAD range pattern 1",
+        "count_x": 12.0,
+        "count_y": 7.0,
+        "spacing_one_cm": 1.2000000000000002,
+        "spacing_two_cm": 1.2000000000000002
+      }
+    ],
+    "sketches": [
+      {
+        "name": "SCAD profile 1",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 2",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 3",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 4",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 5",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 6",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 7",
+        "fully_constrained": true
+      }
+    ],
+    "case": "renamed",
+    "variant": "resize",
+    "script_sha256": "d53da2092801d93beee9a552b16890782c5d4f072d2a8c94c1c5b8aa043974dd"
+  },
+  {
+    "status": "passed",
+    "fusion_version": "2705.1.30",
+    "bodies": [
+      {
+        "solid": true,
+        "bounds_mm": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            20.0,
+            10.0,
+            3.0000000000000004
+          ]
+        ],
+        "volume_mm3": 600.0000000000001
+      }
+    ],
+    "timeline_count": 2,
+    "patterns": [],
+    "sketches": [
+      {
+        "name": "SCAD profile 1",
+        "fully_constrained": true
+      }
+    ],
+    "case": "plate",
+    "variant": "baseline",
+    "script_sha256": "c364daad117ea4c22e82fbf0f6d020b64e89d6191f0f314761e90cdb9b581bd3"
+  },
+  {
+    "status": "passed",
+    "fusion_version": "2705.1.30",
+    "bodies": [
+      {
+        "solid": true,
+        "bounds_mm": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            25.0,
+            10.0,
+            4.0
+          ]
+        ],
+        "volume_mm3": 1000.0
+      }
+    ],
+    "timeline_count": 2,
+    "patterns": [],
+    "sketches": [
+      {
+        "name": "SCAD profile 1",
+        "fully_constrained": true
+      }
+    ],
+    "case": "plate",
+    "variant": "resize",
+    "script_sha256": "c364daad117ea4c22e82fbf0f6d020b64e89d6191f0f314761e90cdb9b581bd3"
+  },
+  {
+    "status": "passed",
+    "fusion_version": "2705.1.30",
+    "bodies": [
+      {
+        "solid": true,
+        "bounds_mm": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            100.0,
+            70.0,
+            47.0
+          ]
+        ],
+        "volume_mm3": 44804.25657074373
+      }
+    ],
+    "timeline_count": 24,
+    "patterns": [
+      {
+        "name": "SCAD range pattern 1",
+        "count_x": 7.0,
+        "count_y": 5.0,
+        "spacing_one_cm": 1.2000000000000002,
+        "spacing_two_cm": 1.2000000000000002
+      }
+    ],
+    "sketches": [
+      {
+        "name": "SCAD profile 1",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 2",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 3",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 4",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 5",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 6",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 7",
+        "fully_constrained": true
+      }
+    ],
+    "case": "portable",
+    "variant": "baseline",
+    "script_sha256": "d6d5fa7d01e7f3d7ee27de97dcc84c1111fb1b7cbd62eb5867dd4843ca09fea9"
+  }
+]

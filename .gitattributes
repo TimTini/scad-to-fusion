@@ -1,0 +1,2 @@
+# Preserve the reference snapshot's byte-level SHA256 on every platform.
+tests/fixtures/electric-toothbrush-case.scad -text whitespace=cr-at-eol

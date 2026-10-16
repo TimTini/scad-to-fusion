@@ -1,0 +1,50 @@
+{
+  "verified_at": "2026-10-16T07:48:26.700208+07:00",
+  "source_sha256": "e32750b76ff4c8620786dfb8463b2d917a5bd6aad8b2ca1f9b32c61d5207fca4",
+  "script_sha256": "0ee8b8101230f2178b4c4d51129bd38b37bfe97cf6453894e04c12bde36eb322",
+  "offline_tests": 93,
+  "native_cases": 19,
+  "geometry_comparisons": 4,
+  "fusion_version": "2705.1.30",
+  "artifacts": {
+    "output/HopBanChaiDien/conversion-report.json": {
+      "bytes": 8608,
+      "sha256": "91e9600b831448c43ece10d5616559cf4481fc0c34d88609a607df96dc36919c"
+    },
+    "output/HopBanChaiDien/HopBanChaiDien.manifest": {
+      "bytes": 224,
+      "sha256": "f062dd4926fcc064968ce22beed37b00a1d4264524c38c6143d1bb44f3a120a2"
+    },
+    "output/HopBanChaiDien/HopBanChaiDien.py": {
+      "bytes": 2780307,
+      "sha256": "0ee8b8101230f2178b4c4d51129bd38b37bfe97cf6453894e04c12bde36eb322"
+    },
+    "output/HopBanChaiDien/native-report.json": {
+      "bytes": 998,
+      "sha256": "b2b91fecca1e8dd4dd5dde0091c3f3ccaa3ba8fd65dcbc77249a73bed39267aa"
+    },
+    "output/HopBanChaiDien/README.md": {
+      "bytes": 553,
+      "sha256": "97755bd58df0b2119b27f78d75a07404f76bfc38a69b8e95d1c2b436ed37a3e3"
+    },
+    "dist/HopBanChaiDien-fusion.zip": {
+      "bytes": 674997,
+      "sha256": "7e509696abf85864cf74793afbfd956d8344792a8b2499556c8f54cdf96c995c"
+    },
+    "docs/validation/toothbrush-native-validation.json": {
+      "bytes": 4050,
+      "sha256": "c81703dbee295fab60dd96059feff0623050e5088bab8b2fd89e192ae3dbc885"
+    },
+    "docs/validation/toothbrush-regression.json": {
+      "bytes": 16625,
+      "sha256": "a4a76e7a940eb130e0c4b80e649fe92cd8e00b6d74c1e4ba4be88fb3c12b4fed"
+    },
+    "docs/validation/toothbrush-geometry-comparison.json": {
+      "bytes": 6621,
+      "sha256": "a10ef792b93e987d880b8d7b6f8e11041878182fb4ff3d49d78b773b9968480b"
+    }
+  },
+  "physical_validation": "not_run",
+  "step_export": "passed",
+  "step_readback": "not_run"
+}

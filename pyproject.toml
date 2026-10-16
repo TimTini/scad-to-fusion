@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scad2fusion"
+version = "0.1.0"
+description = "Source-driven OpenSCAD to native Autodesk Fusion Python converter"
+requires-python = ">=3.12"
+
+[project.optional-dependencies]
+audit = ["numpy", "trimesh", "manifold3d", "networkx", "scipy", "rtree"]
+
+[project.scripts]
+scad2fusion = "scad2fusion.cli:main"
+
+[tool.setuptools.package-data]
+scad2fusion = ["*.py"]
