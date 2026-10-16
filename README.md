@@ -42,7 +42,7 @@ Gói output dùng Python chuẩn và `adsk` có sẵn trong Fusion; có thể co
 ## Mức hỗ trợ
 
 - Parser: biến số/boolean, biểu thức, `floor/min/max/abs` và một số hàm số học, vector/range, module đơn giản, `assert`, `if/else`, ternary, vòng lặp Cartesian. Bảo toàn biểu thức kích thước; điều kiện được chọn lúc sinh.
-- Extension hộp bàn chải: function, `let`, indexing, nested comprehensions, vector arithmetic và cấu hình string/array; polygon profile với Revolve; polyhedron thành solid BaseFeature giữ các mặt source. Ren polyhedron cập nhật bằng sinh lại script; report ghi dependency và `update` của từng tham số.
+- Extension hộp bàn chải: function, `let`, indexing, nested comprehensions, vector arithmetic và cấu hình string/array; Revolve với Fillet native cho các cung bo 90° nhận dạng được; Loft tiết diện tròn cho ren xoắn có quy luật. Mesh khác giữ BaseFeature từ mặt nguồn. Bán kính Fillet liên kết với tham số nguồn; ren cập nhật bằng sinh lại script. Report ghi representation, dependency và `update` của từng tham số.
 - Native: `cube`, cylinder thẳng; `square/circle` với `linear_extrude` thẳng; `offset(r)` trên square; Boolean 2D trong profile; `union/difference` solid, gồm composite cutter.
 - Transform: translate; rotate/scale trong miền mặt phẳng extrusion song song XY/XZ/YZ. Hướng và frame thực tế được ánh xạ vào sketch; scale âm có ca khay kiểm chứng. Góc/scale của solid là lựa chọn lúc sinh.
 - Lỗ lặp: vòng lặp range affine cắt bằng một extrusion được chuyển thành native rectangular Pattern. Số lượng và spacing có expression; biến thể 1 × 1 đã được kiểm tra.

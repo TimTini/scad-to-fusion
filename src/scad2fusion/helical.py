@@ -7,6 +7,53 @@ section and every strip triangle must match, including the source end taper.
 import math
 
 
+def select_sections(sections, max_angle=15):
+    """Keep endpoints, radius-law corners and bounded angular spacing."""
+    indices = {0, len(sections) - 1}
+    for i in range(1, len(sections) - 1):
+        left = (sections[i]['radius'] - sections[i - 1]['radius']) / (sections[i]['angle'] - sections[i - 1]['angle'])
+        right = (sections[i + 1]['radius'] - sections[i]['radius']) / (sections[i + 1]['angle'] - sections[i]['angle'])
+        if abs(left - right) > 1e-7:
+            indices.add(i)
+    step = abs(sections[1]['angle'] - sections[0]['angle'])
+    stride = max(1, int(math.radians(max_angle) / step + 1e-9))
+    for start, end in zip(sorted(indices), sorted(indices)[1:]):
+        indices.update(range(start, end, stride))
+    return [sections[i] for i in sorted(indices)]
+
+
+def create_helical_loft(core, fusion, comp, sections):
+    """Smooth radial/Z circles; all dimensions here are fixed at generation."""
+    profiles = []
+    for section in sections:
+        inp = comp.constructionPlanes.createInput()
+        if not inp.setByAngle(comp.zConstructionAxis,
+                core.ValueInput.createByReal(section['angle']), comp.xZConstructionPlane):
+            raise RuntimeError('Could not define helical section plane')
+        plane = comp.constructionPlanes.add(inp)
+        sketch = comp.sketches.add(plane)
+        sketch.name = 'SCAD helical section ' + str(len(profiles) + 1)
+        center = sketch.modelToSketchSpace(core.Point3D.create(*(v / 10 for v in section['center'])))
+        if abs(center.z) > 1e-6:
+            raise RuntimeError('Helical section center is outside radial/Z plane')
+        circle = sketch.sketchCurves.sketchCircles.addByCenterRadius(center, section['radius'] / 10)
+        circle.isFixed = True
+        if sketch.profiles.count != 1 or not sketch.isFullyConstrained:
+            raise RuntimeError('Expected one fully constrained helical circle')
+        profiles.append(sketch.profiles.item(0))
+        sketch.isLightBulbOn = False
+        plane.isLightBulbOn = False
+    inp = comp.features.loftFeatures.createInput(fusion.FeatureOperations.NewBodyFeatureOperation)
+    inp.isSolid, inp.isClosed = True, False
+    for profile in profiles:
+        inp.loftSections.add(profile)
+    feature = comp.features.loftFeatures.add(inp)
+    feature.name = 'SCAD smooth helical Loft (regenerate from SCAD)'
+    if feature.bodies.count != 1 or not feature.bodies.item(0).isSolid:
+        raise RuntimeError('Expected one solid helical Loft')
+    return feature
+
+
 def recognize_helical_sections(points, faces):
     """Return measured sections, or None when this ordered mesh is not supported.
 

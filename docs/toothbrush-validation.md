@@ -1,5 +1,19 @@
 # Hộp bàn chải điện — kiểm chứng converter
 
+## Bản native đơn giản hóa
+
+Nhánh `work/analytic-geometry` đã tích hợp Revolve với **10 Fillet native** nối biểu thức bán kính và **2 Loft ren tiết diện tròn**. Cấu hình mặc định có hai solid: thân **33 mặt/51 cạnh**, nắp **10 mặt/9 cạnh**; không dùng BaseFeature. Các cung 90° được nhận dạng từ công thức tâm/bán kính/cặp sin-cos, tạo profile nhọn rồi Fillet. Ren giữ pitch, phase, đoạn thu nhỏ hai đầu; thay đổi ren vẫn cần sinh lại script.
+
+Fusion 2705.1.30 đã chạy 5 cấu hình: layout baseline, đổi chiều cao, đổi sáu bán kính bo qua Change Parameters, thân tùy chỉnh và assembled. Mọi feature khỏe, sketch đủ ràng buộc, bounds và số solid đúng. Cấu hình thân tùy chỉnh cố ý dùng tiết diện ren 12 cạnh nên giữ đường polyhedron/BaseFeature; việc giữ polygon ít cạnh là giới hạn có chủ đích.
+
+Đối chiếu cả 5 cấu hình với source OpenSCAD đều đạt ngưỡng: sai lệch bề mặt lấy mẫu lớn nhất **0,034748 mm**, thể tích **0,013649%**, symmetric difference **0,056590%**. Các mặt cắt Z1,5 / Z75 / Z205 / Y0,123 có số vòng trùng nhau giữa reference và candidate; mesh kín và số component khớp. Đây là phép đo lấy mẫu, không phải chứng minh Hausdorff chính xác hay kiểm chứng lắp/vặn vật lý. Bộ 15 ca native hồi quy cũ cũng đạt với mã hiện tại.
+
+Bằng chứng: [native, mesh, regression và artifact hashes](validation/native-smooth-validation.json). Script bàn giao có SHA256 `7a49493be6bfd6c4d27aafde908b9484db8c00a0edda637a7b19e14212ffdb3a`. `output/HopBanChaiDien` và ZIP `dist/HopBanChaiDien-smooth-fusion.zip` chứa đúng script đã chạy; output và artifact lớn giữ local, không nằm trong Git. Dựng mới bằng CLI từ fixture để tái lập.
+
+Timeline mặc định có 253 mục do mỗi section Loft cần sketch và construction plane; hình học solid đã giảm mặt/cạnh, nhưng số mục timeline chưa được tối ưu. Bán kính bo cập nhật trực tiếp được kiểm tra trong miền thay đổi đã ghi ở bằng chứng; count, ren và transform được đánh dấu rebuild theo report.
+
+## Baseline trước đơn giản hóa — tag v0.1.0
+
 Nguồn tham chiếu: `tests/fixtures/electric-toothbrush-case.scad`, SHA256 `e32750b76ff4c8620786dfb8463b2d917a5bd6aad8b2ca1f9b32c61d5207fca4`. Fixture `tests/fixtures/electric-toothbrush-case.scad` là bản sao nguyên trạng. Source project được giữ nguyên; script Fusion viết tay trong project đó không phải output converter và không thay thế geometry SCAD làm căn cứ.
 
 Converter đọc trực tiếp các hàm profile và `round_thread()`. Hai thân dùng native Revolve từ polygon radial/Z, hai ren dùng solid BRep BaseFeature từ 25.968 vertex và 51.844 mặt của source. Giữ phase, pitch, mặt cắt radial/Z và fade45° với bán kính tối thiểu `thread_embed/4`. Bề mặt xoay native thay các mặt góc OpenSCAD; đây là sai khác analytic có đo kiểm.

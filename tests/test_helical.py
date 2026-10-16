@@ -30,6 +30,17 @@ def tube(turns=1.5, phase=37, pitch=4.2, sides=24, steps=72):
 
 
 class HelicalRecognitionTests(unittest.TestCase):
+    def test_smooth_sections_keep_taper_corners(self):
+        from scad2fusion.helical import select_sections
+        points, faces = tube()
+        recognized = recognize_helical_sections(points, faces)
+        selected = select_sections(recognized['sections'], 15)
+        self.assertEqual(selected[0], recognized['sections'][0])
+        self.assertEqual(selected[-1], recognized['sections'][-1])
+        self.assertLess(len(selected), len(recognized['sections']))
+        self.assertTrue(all(abs(b['angle']-a['angle']) <= math.radians(15)+1e-9
+                            for a,b in zip(selected,selected[1:])))
+
     def test_recovers_pitch_phase_and_every_tapered_section(self):
         points, faces = tube()
         result = recognize_helical_sections(points, faces)

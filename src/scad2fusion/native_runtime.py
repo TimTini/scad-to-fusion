@@ -9,7 +9,8 @@ import ast
 
 from .planar import Scalar, Region
 from .units import fusion_expression, expression_ast
-from .native_geometry import revolve_profile_frame, revolve_placement, polyhedron_mesh, create_polyhedron_body
+from .native_geometry import revolve_profile_frame, revolve_placement, polyhedron_mesh, create_polyhedron_body, revolve_corner_edge, helical_plan, revolve_round_plan
+from .helical import create_helical_loft
 
 
 def _s(value):
@@ -179,7 +180,7 @@ def batch_cylinder_cuts(node, frame):
 
 def validate_program(program):
     operations, rebuild, approximations = set(), set(), set()
-    loops = []
+    loops, representations = [], []
 
     def deps(value):
         if isinstance(value, dict):
@@ -211,11 +212,19 @@ def validate_program(program):
                     walk(child, frame, cutter or (op == 'difference' and index > 0))
             elif op == 'polyhedron':
                 polyhedron_mesh(node['args'], frame)
+                plan = helical_plan(node['args'], frame)
+                representations.append({'line':node.get('line',1), 'source':'polyhedron',
+                    'native':'smooth_helical_loft' if plan else 'faceted_base_feature',
+                    'source_faces':len(node['args']['faces']),
+                    'sections':len(plan['sections']) if plan else 0})
                 deps(node['args'].get('points', []))
                 rebuild.update(node['args'].get('rebuild_dependencies', []))
                 rebuild.update(n.id for value in frame.origin for n in ast.walk(expression_ast(value.text))
                                if isinstance(n,ast.Name) and n.id in program.get('parameters',{}))
-                approximations.add('Polyhedron uses original planar faces as a fixed native BRep base feature; regenerate to change its geometry')
+                if plan:
+                    approximations.add('Recognized helix uses circular radial/Z Loft sections with source pitch/phase/taper; polygon-to-circle and Loft approximation require mesh comparison; geometry changes require regeneration')
+                else:
+                    approximations.add('Polyhedron uses original planar faces as a fixed native BRep base feature; regenerate to change its geometry')
             elif op == 'rotate_extrude':
                 deps(node['args'].get('angle',360))
                 resolution_dependencies(node)
@@ -227,6 +236,12 @@ def validate_program(program):
                 if not 0 < angle.value <= 360: raise ValueError('rotate_extrude angle must be in (0, 360]')
                 if region.bounds[0] < -1e-9: raise ValueError('rotate_extrude profile must lie at nonnegative radius')
                 revolve_placement(frame)
+                rounded = revolve_round_plan(node, frame, program.get('parameters'))
+                representations.append({'line':node.get('line',1), 'source':'rotate_extrude',
+                    'native':'revolve_with_fillets' if rounded else 'revolve',
+                    'fillets':len(rounded['fillets']) if rounded else 0})
+                if rounded:
+                    approximations.add('Explicit circular quarter-round samples become source-linked native Fillet features on a sharp Revolve profile')
                 approximations.add('Native revolve replaces angular OpenSCAD facets; sampled polygon profile is retained')
             else:
                 resolution_dependencies(node)
@@ -251,7 +266,7 @@ def validate_program(program):
     return {'operations': sorted(operations), 'generation_time_transform_parameters': sorted(rebuild),
             'structure_update': 'SCAD conditions and non-pattern loops require regeneration',
             'approximations': sorted(approximations), 'plane_support': 'XY/XZ/YZ parallel extrusions',
-            'loops': loops,
+            'loops': loops, 'representations':representations,
             'coordinate_branches': 'Coordinates keep their generation-time sign; crossing zero or changing a symbolic zero requires rebuilding',
             'assertions': 'Checked during conversion; keep SCAD input domain when editing Fusion parameters'}
 
@@ -447,7 +462,9 @@ class NativeBuilder:
         return merged
 
     def revolve(self, node, frame):
-        region = Region(_group(node['children']))
+        rounded = revolve_round_plan(node, frame, self.program.get('parameters'))
+        profile = {'op':'polygon','args':{'points':rounded['points']},'children':[]} if rounded else _group(node['children'])
+        region = Region(profile)
         angle = _s(node['args'].get('angle', 360))
         # Build about a local datum. World in-plane translation can make
         # equivalent zero profile ordinates receive redundant dimensions.
@@ -474,20 +491,41 @@ class NativeBuilder:
         feature.name = 'SCAD revolve ' + str(self.count)
         sketch.isVisible = False
         bodies = list(feature.bodies)
+        if rounded:
+            for corner in rounded['fillets']:
+                if len(bodies) != 1:
+                    raise RuntimeError('Rounded Revolve requires one connected body')
+                r, z = corner['position']
+                edge = revolve_corner_edge(bodies[0], r.value*scales[0], z.value*scales[2])
+                inp = self.comp.features.filletFeatures.createInput()
+                radius = _s(corner['radius']) * scales[0]
+                inp.edgeSetInputs.addConstantRadiusEdgeSet(self.collection([edge]),
+                    self.core.ValueInput.createByString(self.expression(radius)), False)
+                self.stage = 'SCAD fillet ' + radius.text
+                fillet = self.comp.features.filletFeatures.add(inp)
+                fillet.name = self.stage
+                bodies = list(fillet.bodies)
+        return self.place_bodies(bodies, frame, axes)
+
+    def place_bodies(self, bodies, frame, axes):
         if any(abs(v.value)>1e-10 for v in frame.origin) or any(abs(v-(1 if i==j else 0))>1e-10 for j,axis in enumerate(axes) for i,v in enumerate(axis)):
             transform = self.core.Matrix3D.create()
             transform.setWithCoordinateSystem(self.core.Point3D.create(*(v.value/10 for v in frame.origin)),
                 *(self.core.Vector3D.create(*axis) for axis in axes))
             inp = self.comp.features.moveFeatures.createInput2(self.collection(bodies))
-            if not inp.defineAsFreeMove(transform): raise RuntimeError('Could not define revolve placement')
+            if not inp.defineAsFreeMove(transform): raise RuntimeError('Could not define solid placement')
             move = self.comp.features.moveFeatures.add(inp)
-            move.name = 'SCAD revolve placement (regenerate from SCAD)'
+            move.name = 'SCAD solid placement (regenerate from SCAD)'
             bodies = list(move.bodies)
         return bodies
 
     def polyhedron(self, node, frame):
         self.stage = 'SCAD polyhedron line ' + str(node.get('line',1))
         points, faces = polyhedron_mesh(node['args'], frame)
+        plan = helical_plan(node['args'], frame)
+        if plan is not None:
+            feature = create_helical_loft(self.core, self.fusion, self.comp, plan['sections'])
+            return self.place_bodies(list(feature.bodies), frame, plan['axes'])
         body = create_polyhedron_body(self.core,self.fusion,points,faces)
         feature = self.comp.features.baseFeatures.add()
         feature.name = self.stage + ' (regenerate from SCAD)'
@@ -580,14 +618,18 @@ def native_report(design, builder):
     for body in design.rootComponent.bRepBodies:
         b = body.boundingBox
         bodies.append({'solid': body.isSolid, 'bounds_mm': [[b.minPoint.x*10,b.minPoint.y*10,b.minPoint.z*10],
-                      [b.maxPoint.x*10,b.maxPoint.y*10,b.maxPoint.z*10]], 'volume_mm3': body.volume*1000})
+                      [b.maxPoint.x*10,b.maxPoint.y*10,b.maxPoint.z*10]], 'volume_mm3': body.volume*1000,
+                      'faces':body.faces.count, 'edges':body.edges.count})
     sketches = [{'name': s.name, 'fully_constrained': s.isFullyConstrained} for s in design.rootComponent.sketches]
     if any(not s['fully_constrained'] for s in sketches): raise RuntimeError('Sketch lost constraints after recompute')
     patterns = [{'name': p.name, 'count_x': p.quantityOne.value, 'count_y': p.quantityTwo.value,
                  'spacing_one_cm': p.distanceOne.value, 'spacing_two_cm': p.distanceTwo.value}
                 for p in design.rootComponent.features.rectangularPatternFeatures]
     return {'status': 'passed', 'fusion_version': builder.core.Application.get().version,
-            'bodies': bodies, 'timeline_count': design.timeline.count, 'patterns': patterns, 'sketches': sketches}
+            'bodies': bodies, 'timeline_count': design.timeline.count, 'patterns': patterns, 'sketches': sketches,
+            'native_features':{'fillet':design.rootComponent.features.filletFeatures.count,
+                               'loft':design.rootComponent.features.loftFeatures.count,
+                               'base':design.rootComponent.features.baseFeatures.count}}
 
 
 def run(context):

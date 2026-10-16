@@ -1,0 +1,2448 @@
+{
+  "scope": "Native Fillet and smooth Loft integration; sampled CAD fidelity, no physical fit or durability claim",
+  "source": "tests/fixtures/electric-toothbrush-case.scad",
+  "source_sha256": "e32750b76ff4c8620786dfb8463b2d917a5bd6aad8b2ca1f9b32c61d5207fca4",
+  "native": [
+    {
+      "status": "passed",
+      "fusion_version": "2705.1.30",
+      "bodies": [
+        {
+          "solid": true,
+          "bounds_mm": [
+            [
+              -25.7,
+              -25.7,
+              0.0
+            ],
+            [
+              25.7,
+              25.7,
+              213.6
+            ]
+          ],
+          "volume_mm3": 139377.3557683516,
+          "faces": 33,
+          "edges": 51
+        },
+        {
+          "solid": true,
+          "bounds_mm": [
+            [
+              37.7,
+              -25.7,
+              0.0
+            ],
+            [
+              89.1,
+              25.7,
+              85.19999999999999
+            ]
+          ],
+          "volume_mm3": 27492.891062491737,
+          "faces": 10,
+          "edges": 9
+        }
+      ],
+      "timeline_count": 253,
+      "patterns": [],
+      "sketches": [
+        {
+          "name": "SCAD profile 1",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 1",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 2",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 3",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 4",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 5",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 6",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 7",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 8",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 9",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 10",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 11",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 12",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 13",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 14",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 15",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 16",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 17",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 18",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 19",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 20",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 21",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 22",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 23",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 24",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 25",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 26",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 27",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 28",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 29",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 30",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 31",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 32",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 33",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 34",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 35",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 36",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 37",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 38",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 39",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 40",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 41",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 42",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 43",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 44",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 45",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 46",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 47",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 48",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 49",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 50",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 51",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 2",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 3",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 1 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 2 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 3 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 4 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 5 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 6 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 7 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 8 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 9 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 10 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 11 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 12 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 13 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 14 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 15 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 16 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 17 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 18 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 19 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 20 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 21 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 22 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 23 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 24 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 25 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 26 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 27 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 28 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 29 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 30 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 31 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 32 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 33 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 34 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 35 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 36 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 37 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 38 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 39 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 40 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 41 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 42 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 43 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 44 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 45 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 46 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 47 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 48 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 49 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 50 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 51 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 52",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 53",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 54",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 55",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 56",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 57",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 58",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 59",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 60",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 61",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 62",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 63",
+          "fully_constrained": true
+        }
+      ],
+      "native_features": {
+        "fillet": 10,
+        "loft": 2,
+        "base": 0
+      },
+      "case": "layout",
+      "variant": "baseline",
+      "script_sha256": "7a49493be6bfd6c4d27aafde908b9484db8c00a0edda637a7b19e14212ffdb3a"
+    },
+    {
+      "status": "passed",
+      "fusion_version": "2705.1.30",
+      "bodies": [
+        {
+          "solid": true,
+          "bounds_mm": [
+            [
+              -25.7,
+              -25.7,
+              0.0
+            ],
+            [
+              25.7,
+              25.7,
+              219.60000000000002
+            ]
+          ],
+          "volume_mm3": 140885.48926143296,
+          "faces": 33,
+          "edges": 51
+        },
+        {
+          "solid": true,
+          "bounds_mm": [
+            [
+              37.699999999999996,
+              -25.700000000000003,
+              0.0
+            ],
+            [
+              89.1,
+              25.700000000000003,
+              90.20000000000002
+            ]
+          ],
+          "volume_mm3": 28818.919578692574,
+          "faces": 10,
+          "edges": 9
+        }
+      ],
+      "timeline_count": 253,
+      "patterns": [],
+      "sketches": [
+        {
+          "name": "SCAD profile 1",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 1",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 2",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 3",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 4",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 5",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 6",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 7",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 8",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 9",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 10",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 11",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 12",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 13",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 14",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 15",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 16",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 17",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 18",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 19",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 20",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 21",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 22",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 23",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 24",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 25",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 26",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 27",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 28",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 29",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 30",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 31",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 32",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 33",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 34",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 35",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 36",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 37",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 38",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 39",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 40",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 41",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 42",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 43",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 44",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 45",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 46",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 47",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 48",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 49",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 50",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 51",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 2",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 3",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 1 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 2 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 3 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 4 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 5 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 6 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 7 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 8 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 9 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 10 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 11 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 12 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 13 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 14 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 15 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 16 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 17 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 18 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 19 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 20 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 21 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 22 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 23 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 24 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 25 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 26 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 27 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 28 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 29 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 30 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 31 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 32 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 33 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 34 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 35 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 36 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 37 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 38 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 39 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 40 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 41 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 42 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 43 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 44 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 45 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 46 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 47 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 48 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 49 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 50 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 51 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 52",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 53",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 54",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 55",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 56",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 57",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 58",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 59",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 60",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 61",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 62",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 63",
+          "fully_constrained": true
+        }
+      ],
+      "native_features": {
+        "fillet": 10,
+        "loft": 2,
+        "base": 0
+      },
+      "case": "layout",
+      "variant": "height_resize",
+      "script_sha256": "7a49493be6bfd6c4d27aafde908b9484db8c00a0edda637a7b19e14212ffdb3a"
+    },
+    {
+      "status": "passed",
+      "fusion_version": "2705.1.30",
+      "bodies": [
+        {
+          "solid": true,
+          "bounds_mm": [
+            [
+              -25.7,
+              -25.7,
+              0.0
+            ],
+            [
+              25.7,
+              25.7,
+              213.6
+            ]
+          ],
+          "volume_mm3": 139134.95518059056,
+          "faces": 33,
+          "edges": 51
+        },
+        {
+          "solid": true,
+          "bounds_mm": [
+            [
+              37.699999999999996,
+              -25.700000000000003,
+              0.0
+            ],
+            [
+              89.1,
+              25.700000000000003,
+              85.20000000000002
+            ]
+          ],
+          "volume_mm3": 27239.114484034333,
+          "faces": 10,
+          "edges": 9
+        }
+      ],
+      "timeline_count": 253,
+      "patterns": [],
+      "sketches": [
+        {
+          "name": "SCAD profile 1",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 1",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 2",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 3",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 4",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 5",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 6",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 7",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 8",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 9",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 10",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 11",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 12",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 13",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 14",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 15",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 16",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 17",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 18",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 19",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 20",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 21",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 22",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 23",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 24",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 25",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 26",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 27",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 28",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 29",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 30",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 31",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 32",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 33",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 34",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 35",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 36",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 37",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 38",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 39",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 40",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 41",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 42",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 43",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 44",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 45",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 46",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 47",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 48",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 49",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 50",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 51",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 2",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 3",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 1 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 2 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 3 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 4 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 5 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 6 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 7 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 8 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 9 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 10 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 11 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 12 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 13 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 14 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 15 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 16 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 17 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 18 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 19 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 20 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 21 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 22 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 23 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 24 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 25 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 26 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 27 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 28 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 29 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 30 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 31 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 32 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 33 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 34 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 35 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 36 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 37 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 38 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 39 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 40 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 41 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 42 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 43 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 44 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 45 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 46 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 47 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 48 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 49 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 50 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 51 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 52",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 53",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 54",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 55",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 56",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 57",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 58",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 59",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 60",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 61",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 62",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 63",
+          "fully_constrained": true
+        }
+      ],
+      "native_features": {
+        "fillet": 10,
+        "loft": 2,
+        "base": 0
+      },
+      "case": "layout",
+      "variant": "round_resize",
+      "script_sha256": "7a49493be6bfd6c4d27aafde908b9484db8c00a0edda637a7b19e14212ffdb3a"
+    },
+    {
+      "status": "passed",
+      "fusion_version": "2705.1.30",
+      "bodies": [
+        {
+          "solid": true,
+          "bounds_mm": [
+            [
+              -25.7,
+              -25.7,
+              0.0
+            ],
+            [
+              25.7,
+              25.7,
+              213.6
+            ]
+          ],
+          "volume_mm3": 139502.38899109553,
+          "faces": 1152,
+          "edges": 2018
+        }
+      ],
+      "timeline_count": 14,
+      "patterns": [],
+      "sketches": [
+        {
+          "name": "SCAD profile 1",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 2",
+          "fully_constrained": true
+        }
+      ],
+      "native_features": {
+        "fillet": 6,
+        "loft": 0,
+        "base": 1
+      },
+      "case": "body_custom",
+      "variant": "baseline",
+      "script_sha256": "4a9d483dedf576f0e16e0bdefdce3e241d1289b5326d7c04e9fe63f2e7097097"
+    },
+    {
+      "status": "passed",
+      "fusion_version": "2705.1.30",
+      "bodies": [
+        {
+          "solid": true,
+          "bounds_mm": [
+            [
+              -25.700000000000003,
+              -25.700000000000003,
+              0.0
+            ],
+            [
+              25.700000000000003,
+              25.700000000000003,
+              285.2
+            ]
+          ],
+          "volume_mm3": 166865.7685942179,
+          "faces": 43,
+          "edges": 60
+        }
+      ],
+      "timeline_count": 254,
+      "patterns": [],
+      "sketches": [
+        {
+          "name": "SCAD profile 1",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 1",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 2",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 3",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 4",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 5",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 6",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 7",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 8",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 9",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 10",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 11",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 12",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 13",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 14",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 15",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 16",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 17",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 18",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 19",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 20",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 21",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 22",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 23",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 24",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 25",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 26",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 27",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 28",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 29",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 30",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 31",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 32",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 33",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 34",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 35",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 36",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 37",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 38",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 39",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 40",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 41",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 42",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 43",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 44",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 45",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 46",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 47",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 48",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 49",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 50",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 51",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 2",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 3",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 1 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 2 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 3 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 4 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 5 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 6 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 7 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 8 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 9 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 10 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 11 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 12 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 13 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 14 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 15 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 16 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 17 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 18 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 19 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 20 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 21 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 22 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 23 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 24 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 25 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 26 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 27 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 28 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 29 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 30 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 31 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 32 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 33 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 34 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 35 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 36 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 37 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 38 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 39 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 40 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 41 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 42 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 43 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 44 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 45 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 46 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 47 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 48 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 49 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 50 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 51 (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 52",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 53",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 54",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 55",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 56",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 57",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 58",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 59",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 60",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 61",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 62",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD helical section 63",
+          "fully_constrained": true
+        }
+      ],
+      "native_features": {
+        "fillet": 10,
+        "loft": 2,
+        "base": 0
+      },
+      "case": "assembled",
+      "variant": "baseline",
+      "script_sha256": "803b3ade985c5937fa41fad9bea99f48d25582999cf727c870292be831edf1ff"
+    }
+  ],
+  "mesh_comparisons": [
+    {
+      "reference": "layout-reference.stl",
+      "candidate": "layout_baseline.stl",
+      "bounds_error_mm": 6.102025508880615e-06,
+      "reference_volume_mm3": 166840.09605844744,
+      "candidate_volume_mm3": 166860.1099439483,
+      "relative_volume_error": 0.00011995848704054138,
+      "symmetric_difference_mm3": 93.12951459312656,
+      "relative_symmetric_difference": 0.0005581962417505527,
+      "reference_components": 2,
+      "candidate_components": 2,
+      "candidate_watertight": true,
+      "sampled_bidirectional_surface_error_mm": 0.03474774378951814,
+      "surface_method": "All vertices plus 10000 deterministic surface samples per mesh; not exact Hausdorff proof",
+      "sections": [
+        {
+          "axis": 2,
+          "location_mm": 1.5,
+          "reference_loops": 21,
+          "candidate_loops": 21
+        },
+        {
+          "axis": 2,
+          "location_mm": 75.0,
+          "reference_loops": 4,
+          "candidate_loops": 4
+        },
+        {
+          "axis": 2,
+          "location_mm": 205.0,
+          "reference_loops": 2,
+          "candidate_loops": 2
+        },
+        {
+          "axis": 1,
+          "location_mm": 0.123,
+          "reference_loops": 5,
+          "candidate_loops": 5
+        }
+      ],
+      "status": "passed",
+      "reuse": "Both input SHA256 match the completed quick comparison",
+      "case": "layout_baseline",
+      "reference_sha256": "e72a31c48adfd8687360bf4331743a688330d11f4397dbe599333c7b71d30f1c",
+      "candidate_sha256": "94bbd45a2eb7f2ab59d2a7ae81794b08be6042bf82ee07352209ab53d35f7616"
+    },
+    {
+      "reference": "layout-height_resize-reference.stl",
+      "candidate": "layout_height_resize.stl",
+      "bounds_error_mm": 6.102025508880615e-06,
+      "reference_volume_mm3": 169666.60964130066,
+      "candidate_volume_mm3": 169686.67937744572,
+      "relative_volume_error": 0.00011828925082836682,
+      "symmetric_difference_mm3": 96.01300779225616,
+      "relative_symmetric_difference": 0.0005658921811147244,
+      "reference_components": 2,
+      "candidate_components": 2,
+      "candidate_watertight": true,
+      "sampled_bidirectional_surface_error_mm": 0.03474774378951814,
+      "surface_method": "All vertices plus 10000 deterministic surface samples per mesh; not exact Hausdorff proof",
+      "sections": [
+        {
+          "axis": 2,
+          "location_mm": 1.5,
+          "reference_loops": 21,
+          "candidate_loops": 21
+        },
+        {
+          "axis": 2,
+          "location_mm": 75,
+          "reference_loops": 4,
+          "candidate_loops": 4
+        },
+        {
+          "axis": 2,
+          "location_mm": 205,
+          "reference_loops": 2,
+          "candidate_loops": 2
+        },
+        {
+          "axis": 1,
+          "location_mm": 0.123,
+          "reference_loops": 5,
+          "candidate_loops": 5
+        }
+      ],
+      "status": "passed",
+      "case": "layout_height_resize",
+      "reference_sha256": "a6a0df7261c49af7ec34fe65ceb9abf00f7cf8d8f7c42bec1850a6adba4ca6ed",
+      "candidate_sha256": "2e8fc7e69784429b1e49c7b2c55add4fab866d76ea1baa6a43b033c356652959"
+    },
+    {
+      "reference": "layout-round_resize-reference.stl",
+      "candidate": "layout_round_resize.stl",
+      "bounds_error_mm": 6.102025508880615e-06,
+      "reference_volume_mm3": 166341.1209998509,
+      "candidate_volume_mm3": 166363.8240995351,
+      "relative_volume_error": 0.00013648519108049086,
+      "symmetric_difference_mm3": 93.86343940079678,
+      "relative_symmetric_difference": 0.0005642828353963114,
+      "reference_components": 2,
+      "candidate_components": 2,
+      "candidate_watertight": true,
+      "sampled_bidirectional_surface_error_mm": 0.03474774378951814,
+      "surface_method": "All vertices plus 10000 deterministic surface samples per mesh; not exact Hausdorff proof",
+      "sections": [
+        {
+          "axis": 2,
+          "location_mm": 1.5,
+          "reference_loops": 21,
+          "candidate_loops": 21
+        },
+        {
+          "axis": 2,
+          "location_mm": 75,
+          "reference_loops": 4,
+          "candidate_loops": 4
+        },
+        {
+          "axis": 2,
+          "location_mm": 205,
+          "reference_loops": 2,
+          "candidate_loops": 2
+        },
+        {
+          "axis": 1,
+          "location_mm": 0.123,
+          "reference_loops": 5,
+          "candidate_loops": 5
+        }
+      ],
+      "status": "passed",
+      "case": "layout_round_resize",
+      "reference_sha256": "91349a9a87fdc110e4e6b0bf6e8434bd815b98512a812daebaf6feb0b4194995",
+      "candidate_sha256": "7eccbd2a50feb9feb978682d0b164c6119b40810d8a2085e57bd7306e02b1f6d"
+    },
+    {
+      "reference": "body_custom-reference.stl",
+      "candidate": "body_custom_baseline.stl",
+      "bounds_error_mm": 6.102025508880615e-06,
+      "reference_volume_mm3": 139485.89240494117,
+      "candidate_volume_mm3": 139495.87185539177,
+      "relative_volume_error": 7.154451449202935e-05,
+      "symmetric_difference_mm3": 56.9410985391587,
+      "relative_symmetric_difference": 0.00040822120113662196,
+      "reference_components": 1,
+      "candidate_components": 1,
+      "candidate_watertight": true,
+      "sampled_bidirectional_surface_error_mm": 0.00627195983888865,
+      "surface_method": "All vertices plus 10000 deterministic surface samples per mesh; not exact Hausdorff proof",
+      "sections": [
+        {
+          "axis": 2,
+          "location_mm": 1.5,
+          "reference_loops": 8,
+          "candidate_loops": 8
+        },
+        {
+          "axis": 2,
+          "location_mm": 75,
+          "reference_loops": 2,
+          "candidate_loops": 2
+        },
+        {
+          "axis": 2,
+          "location_mm": 205,
+          "reference_loops": 2,
+          "candidate_loops": 2
+        },
+        {
+          "axis": 1,
+          "location_mm": 0.123,
+          "reference_loops": 4,
+          "candidate_loops": 4
+        }
+      ],
+      "status": "passed",
+      "case": "body_custom_baseline",
+      "reference_sha256": "b42e17d0f5f42572ee4976fb19f09b6532a71a2385a4b9f9a2d3944580cc1af4",
+      "candidate_sha256": "3292401e7375f4ec546fca7aca15d0353b0beb998cb92d0b291fdbb1696274f2"
+    },
+    {
+      "reference": "assembled-reference.stl",
+      "candidate": "assembled_baseline.stl",
+      "bounds_error_mm": 1.2207031261368684e-05,
+      "reference_volume_mm3": 166840.09605826094,
+      "candidate_volume_mm3": 166860.11848443304,
+      "relative_volume_error": 0.00012000967780017057,
+      "symmetric_difference_mm3": 93.12914686882868,
+      "relative_symmetric_difference": 0.0005581940376988741,
+      "reference_components": 1,
+      "candidate_components": 1,
+      "candidate_watertight": true,
+      "sampled_bidirectional_surface_error_mm": 0.03474774378951814,
+      "surface_method": "All vertices plus 10000 deterministic surface samples per mesh; not exact Hausdorff proof",
+      "sections": [
+        {
+          "axis": 2,
+          "location_mm": 1.5,
+          "reference_loops": 20,
+          "candidate_loops": 20
+        },
+        {
+          "axis": 2,
+          "location_mm": 75,
+          "reference_loops": 2,
+          "candidate_loops": 2
+        },
+        {
+          "axis": 2,
+          "location_mm": 205,
+          "reference_loops": 4,
+          "candidate_loops": 4
+        },
+        {
+          "axis": 1,
+          "location_mm": 0.123,
+          "reference_loops": 3,
+          "candidate_loops": 3
+        }
+      ],
+      "status": "passed",
+      "case": "assembled_baseline",
+      "reference_sha256": "41330b7e91de62404b097325bb49616eb9f587dd52c454aff9e9938eb1b36ae7",
+      "candidate_sha256": "87ce6bd9a9453a5b785dbbe98c5598a58451e3b52e309dc31db7baf24c3c1825"
+    }
+  ],
+  "regression": [
+    {
+      "case": "tray",
+      "variant": "baseline",
+      "status": "passed",
+      "script_sha256": "be55d31d96d534cb41280c0d813770ff6db176d9520882186d4d942a1acaa597"
+    },
+    {
+      "case": "tray",
+      "variant": "resize",
+      "status": "passed",
+      "script_sha256": "be55d31d96d534cb41280c0d813770ff6db176d9520882186d4d942a1acaa597"
+    },
+    {
+      "case": "tray",
+      "variant": "one",
+      "status": "passed",
+      "script_sha256": "be55d31d96d534cb41280c0d813770ff6db176d9520882186d4d942a1acaa597"
+    },
+    {
+      "case": "two",
+      "variant": "baseline",
+      "status": "passed",
+      "script_sha256": "8f7ed448f4bca700398dbe8d924a09e168c257f79f6eca15ab122c104facf57e"
+    },
+    {
+      "case": "two",
+      "variant": "resize",
+      "status": "passed",
+      "script_sha256": "8f7ed448f4bca700398dbe8d924a09e168c257f79f6eca15ab122c104facf57e"
+    },
+    {
+      "case": "composite",
+      "variant": "baseline",
+      "status": "passed",
+      "script_sha256": "9a414f277317aab7fc09dac31cc42955f254bb6ecd5c024193f7abd606ceae91"
+    },
+    {
+      "case": "bridge",
+      "variant": "baseline",
+      "status": "passed",
+      "script_sha256": "529f6a82f326e2f63a3d6b025e596ba4e774709dc1bc09e012add59921711027"
+    },
+    {
+      "case": "hexagon",
+      "variant": "baseline",
+      "status": "passed",
+      "script_sha256": "ad15345d94296d1c42cfdcba7ce53b15adf3057757f46420afc3af84b8eb30b8"
+    },
+    {
+      "case": "renamed",
+      "variant": "baseline",
+      "status": "passed",
+      "script_sha256": "6530b95a816bfc9706b9b91bd51aee4da6d1e34109eccfe7fd45002677c8edd3"
+    },
+    {
+      "case": "renamed",
+      "variant": "resize",
+      "status": "passed",
+      "script_sha256": "6530b95a816bfc9706b9b91bd51aee4da6d1e34109eccfe7fd45002677c8edd3"
+    },
+    {
+      "case": "plate",
+      "variant": "baseline",
+      "status": "passed",
+      "script_sha256": "57e8ba0f8ed1ede7fea5b9487362077df8000c1d78e98bfb40e2f7f34ea3620e"
+    },
+    {
+      "case": "plate",
+      "variant": "resize",
+      "status": "passed",
+      "script_sha256": "57e8ba0f8ed1ede7fea5b9487362077df8000c1d78e98bfb40e2f7f34ea3620e"
+    },
+    {
+      "case": "portable",
+      "variant": "baseline",
+      "status": "passed",
+      "script_sha256": "be55d31d96d534cb41280c0d813770ff6db176d9520882186d4d942a1acaa597"
+    },
+    {
+      "case": "revolve_cuts",
+      "variant": "baseline",
+      "status": "passed",
+      "script_sha256": "b149127887a036236230a8de671c8e5c21c27dc97a26b08c115939214882f3ad"
+    },
+    {
+      "case": "partial_revolve",
+      "variant": "baseline",
+      "status": "passed",
+      "script_sha256": "8350edda30a64326ee25cc6b6757615751b15f19019d526ff2eeae5b628805fd"
+    }
+  ],
+  "delivery": {
+    "script": "HopBanChaiDien/HopBanChaiDien.py",
+    "script_sha256": "7a49493be6bfd6c4d27aafde908b9484db8c00a0edda637a7b19e14212ffdb3a",
+    "zip": "HopBanChaiDien-smooth-fusion.zip",
+    "zip_sha256": "e85fba2d38e78db5e5781f210efdbb45dc41a100480328143b80cf2e9e5fb37e"
+  },
+  "physical_fit": "not_run"
+}

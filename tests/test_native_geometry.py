@@ -2,6 +2,34 @@
 from scad2fusion.native_geometry import polyhedron_mesh, revolve_profile_frame, revolve_placement
 from scad2fusion.native_runtime import Frame
 
+
+class FilletSelectionTests(unittest.TestCase):
+    def test_helical_plan_accepts_reflection_but_preserves_anisotropic_meshes(self):
+        from test_helical import tube
+        from scad2fusion.native_geometry import helical_plan
+        points, faces = tube()
+        args = {'points':points, 'faces':faces}
+        mirrored = helical_plan(args, Frame([[-2,0,0],[0,2,0],[0,0,2]]))
+        self.assertIsNotNone(mirrored)
+        self.assertLess(mirrored['sections'][0]['angle'], 0)
+        self.assertAlmostEqual(mirrored['sections'][0]['radius'], .05)
+        self.assertIsNone(helical_plan(args, Frame([[2,0,0],[0,2,0],[0,0,3]])))
+        self.assertIsNone(helical_plan(args, Frame([[1,.5,0],[0,1,0],[0,0,1]])))
+
+    def test_selects_exact_axial_corner_and_rejects_ambiguity(self):
+        from types import SimpleNamespace as Obj
+        from scad2fusion.native_geometry import revolve_corner_edge
+        def edge(radius, z, x=0):
+            return Obj(geometry=Obj(objectType='adsk::core::Circle3D',
+                       radius=radius / 10, center=Obj(x=x, y=0, z=z / 10)))
+        wanted = edge(25.7, 0)
+        body = Obj(edges=[edge(21.2, 2.6), wanted, edge(25.7, 200), edge(25.7, 0, 1)])
+        self.assertIs(revolve_corner_edge(body, 25.7, 0), wanted)
+        with self.assertRaisesRegex(ValueError, 'exactly one'):
+            revolve_corner_edge(Obj(edges=[wanted, wanted]), 25.7, 0)
+        with self.assertRaisesRegex(ValueError, 'exactly one'):
+            revolve_corner_edge(body, 24, 0)
+
 class SolidGeometryTests(unittest.TestCase):
     def test_revolve_placement_separates_scale_rotation_and_reflection(self):
         frame = Frame().transformed({'op':'rotate','args':{'a':[0,0,90]}})

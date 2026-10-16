@@ -11,22 +11,7 @@ from pathlib import Path
 
 from scad2fusion.frontend import compile_source
 from scad2fusion.generator import json_value
-from scad2fusion.helical import recognize_helical_sections
-
-
-def select_sections(sections, max_angle):
-    """Keep endpoints, radius-law corners and bounded angular spacing."""
-    indices = {0, len(sections) - 1}
-    for i in range(1, len(sections) - 1):
-        left = (sections[i]['radius'] - sections[i - 1]['radius']) / (sections[i]['angle'] - sections[i - 1]['angle'])
-        right = (sections[i + 1]['radius'] - sections[i]['radius']) / (sections[i + 1]['angle'] - sections[i]['angle'])
-        if abs(left - right) > 1e-7:
-            indices.add(i)
-    step = abs(sections[1]['angle'] - sections[0]['angle'])
-    stride = max(1, int(math.radians(max_angle) / step + 1e-9))
-    for start, end in zip(sorted(indices), sorted(indices)[1:]):
-        indices.update(range(start, end, stride))
-    return [sections[i] for i in sorted(indices)]
+from scad2fusion.helical import recognize_helical_sections, select_sections
 
 
 def prepare(source, output, max_angle=15):

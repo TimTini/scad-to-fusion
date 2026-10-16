@@ -21,8 +21,7 @@ def main():
         ('layout','HopBanChaiDien',{}),
         ('body_custom','ToothbrushBody',{'output_part':'body','bottom_drain_rings':[[7,6,0]],
             'body_thread_turns':1.5,'thread_segments_per_turn':64,'thread_profile_segments':12}),
-        ('assembled','ToothbrushAssembled',{'output_part':'assembled',
-            'thread_segments_per_turn':64,'thread_profile_segments':12}),
+        ('assembled','ToothbrushAssembled',{'output_part':'assembled'}),
     ]
     for tag,name,overrides in configurations:
         package = directory/'packages'/name
@@ -41,6 +40,17 @@ def main():
             resized = directory/'layout-height_resize-reference.stl'
             subprocess.run([str(args.openscad.resolve()),'--backend','Manifold','-D','body_height=219.6',
                 '-D','cap_height=90.2','-o',str(resized),str(source)],check=True)
+            round_values = {'outside_bottom_radius':4.2, 'inside_bottom_radius':2.2,
+                            'neck_lip_radius':.9, 'mouth_inside_radius':.35,
+                            'cap_lip_radius':.4, 'cap_entry_radius':.8}
+            variants.append({'name':'round_resize',
+                'parameters':{key:str(value)+' mm' for key,value in round_values.items()},
+                'bounds_mm':mesh.bounds.tolist(),'body_count':2})
+            command = [str(args.openscad.resolve()),'--backend','Manifold',
+                       '-o',str(directory/'layout-round_resize-reference.stl')]
+            for key,value in round_values.items():
+                command.extend(['-D',key+'='+str(value)])
+            subprocess.run(command+[str(source)],check=True)
         cases.append({'name':tag,'script':str(package/(name+'.py')),'variants':variants})
     config = {'evidence':str(directory/'native'),'cases':cases}
     (directory/'config.json').write_text(json.dumps(config,indent=2),encoding='utf-8')

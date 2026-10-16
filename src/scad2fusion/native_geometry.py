@@ -1,6 +1,60 @@
 """Validated source mesh and revolve geometry, shared by offline and Fusion builds."""
 import math
 from .planar import Scalar
+from .helical import recognize_helical_sections, select_sections
+from .round_recovery import recover_quarter_rounds
+
+
+def revolve_round_plan(node, frame, parameters=None):
+    scales, _, _ = revolve_placement(frame)
+    if abs(Scalar.from_ir(node['args'].get('angle', 360)).value - 360) > 1e-9:
+        return None
+    if max(scales) - min(scales) > 1e-9:
+        return None
+    children = node['children']
+    if len(children) != 1 or children[0]['op'] != 'polygon':
+        return None
+    points = [tuple(Scalar.from_ir(v) for v in p) for p in children[0]['args']['points']]
+    values = {name:entry['value'] for name,entry in (parameters or {}).items() if 'value' in entry}
+    return recover_quarter_rounds(points, values)
+
+
+def helical_plan(args, frame):
+    """Recognize the source law before placement; preserve non-circular transforms."""
+    columns = [[row[j] for row in frame.matrix] for j in range(3)]
+    lengths = [math.sqrt(sum(v*v for v in c)) for c in columns]
+    if min(lengths) < 1e-12 or max(lengths) - min(lengths) > 1e-9:
+        return None
+    if any(abs(sum(a*b for a,b in zip(columns[i], columns[j]))) > 1e-9 * lengths[i]*lengths[j]
+           for i,j in ((0,1),(0,2),(1,2))):
+        return None
+    points = [[Scalar.from_ir(v).value for v in p] for p in args['points']]
+    helix = recognize_helical_sections(points, args['faces'])
+    if helix is None:
+        return None
+    scales, axes, sense = revolve_placement(frame)
+    sections = [{'angle':s['angle'] * sense,
+                 'center':[s['center'][0]*scales[0],s['center'][1]*scales[1]*sense,s['center'][2]*scales[2]],
+                 'radius':s['radius']*scales[0]}
+                for s in select_sections(helix['sections'])]
+    return {'axes':axes, 'sections':sections, 'profile_sagitta_mm':helix['profile_sagitta']*scales[0]}
+
+
+def revolve_corner_edge(body, radius_mm, height_mm):
+    """Select a full circular corner about the local Z datum, never by edge index."""
+    matches = []
+    for edge in body.edges:
+        curve = edge.geometry
+        if curve.objectType != 'adsk::core::Circle3D':
+            continue
+        center = curve.center
+        if max(abs(center.x * 10), abs(center.y * 10),
+               abs(center.z * 10 - height_mm), abs(curve.radius * 10 - radius_mm)) < 1e-6:
+            matches.append(edge)
+    if len(matches) != 1:
+        raise ValueError('Expected exactly one circular edge at Revolve corner ' +
+                         str((radius_mm, height_mm)) + '; found ' + str(len(matches)))
+    return matches[0]
 
 
 def revolve_profile_frame(frame):

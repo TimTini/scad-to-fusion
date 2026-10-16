@@ -8,6 +8,21 @@ from scad2fusion.generator import generate_package, expanded_rebuild_parameters
 
 
 class GeneratorTests(unittest.TestCase):
+    def test_real_case_selects_native_fillets_and_smooth_lofts(self):
+        with tempfile.TemporaryDirectory() as directory:
+            report = generate_package(Path(__file__).parent / 'fixtures/electric-toothbrush-case.scad',
+                                      Path(directory) / 'SmoothCase')
+            representations = report['capabilities']['representations']
+            rounds = [r for r in representations if r['native'] == 'revolve_with_fillets']
+            helices = [r for r in representations if r['native'] == 'smooth_helical_loft']
+            self.assertEqual([r['fillets'] for r in rounds], [6, 4])
+            self.assertEqual(len(helices), 2)
+            self.assertEqual(report['parameters']['thread_radius']['update'], 'rebuild')
+            code = (Path(directory) / 'SmoothCase' / 'SmoothCase.py').read_text(encoding='utf-8')
+            self.assertNotIn('from .', code)
+            self.assertIn('def recover_quarter_rounds', code)
+            self.assertIn('def create_helical_loft', code)
+
     def test_polyhedron_middle_vertex_parameters_are_lengths_and_rebuild(self):
         with tempfile.TemporaryDirectory() as directory:
             source = Path(directory)/'mesh.scad'
