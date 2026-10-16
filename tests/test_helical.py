@@ -8,12 +8,12 @@ from scad2fusion.frontend import compile_source
 from scad2fusion.generator import json_value
 
 
-def tube(turns=1.5, phase=37, pitch=4.2, sides=24, steps=72):
+def tube(turns=1.5, phase=37, pitch=4.2, sides=24, steps=72, fade_angle=.8):
     points, faces = [], []
     for i in range(steps + 1):
         t = turns * 2 * math.pi * i / steps
         angle = t + math.radians(phase)
-        radius = max(.025, .9 * min(1, t / .8, (turns * 2 * math.pi - t) / .8))
+        radius = max(.025, .9 * min(1, t / fade_angle, (turns * 2 * math.pi - t) / fade_angle))
         for j in range(sides):
             b = 2 * math.pi * j / sides
             points.append([(23 + radius * math.cos(b)) * math.cos(angle),

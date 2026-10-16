@@ -1,10 +1,11 @@
 """Conservative, offline recognition of radial/Z circular helical sections.
 
-This analysis does not change the production polyhedron representation. Coordinates
-are in the source frame: the supported helix axis is Z through the origin. Each
-section and every strip triangle must match, including the source end taper.
+Coordinates are in the source frame: the supported helix axis is Z through the
+origin. Each section and every strip triangle must match, including the source
+end taper, before native reconstruction is attempted.
 """
 import math
+from .helix_curve import helical_curve_data, split_helical_sections
 
 
 def select_sections(sections, max_angle=15):
@@ -22,35 +23,69 @@ def select_sections(sections, max_angle=15):
     return [sections[i] for i in sorted(indices)]
 
 
-def create_helical_loft(core, fusion, comp, sections):
-    """Smooth radial/Z circles; all dimensions here are fixed at generation."""
-    profiles = []
-    for section in sections:
+def create_helical_sweep(core, fusion, comp, sections):
+    """At most five analytic radius-law Sweeps sharing one centerline/rail sketch."""
+    regions = split_helical_sections(sections)
+    if regions is None:
+        raise ValueError('Helix requires more than five radius-law regions')
+    paths = comp.sketches.add(comp.xYConstructionPlane)
+    paths.name = 'SCAD helix paths (regenerate from SCAD)'
+    paths.is3D = True
+    region_curves = []
+    for region in regions:
+        curves = []
+        varying = abs(region[-1]['radius'] - region[0]['radius']) > 1e-9
+        for guide in ((False, True) if varying else (False,)):
+            data = helical_curve_data(region, guide=guide)
+            curve = core.NurbsCurve3D.createNonRational(
+                [core.Point3D.create(*(v / 10 for v in p)) for p in data['control_points']],
+                data['degree'], data['knots'], False)
+            if curve is None:
+                raise RuntimeError('Could not define helical NURBS path')
+            curves.append(paths.sketchCurves.sketchFixedSplines.addByNurbsCurve(curve))
+        region_curves.append(curves)
+    bodies = []
+    for region, curves in zip(regions, region_curves):
+        path = comp.features.createPath(curves[0], False)
+        section = region[0]
         inp = comp.constructionPlanes.createInput()
-        if not inp.setByAngle(comp.zConstructionAxis,
-                core.ValueInput.createByReal(section['angle']), comp.xZConstructionPlane):
-            raise RuntimeError('Could not define helical section plane')
+        if not inp.setByPath(path, fusion.PathDistanceTypes.ProportionalPathDistanceType,
+                             core.ValueInput.createByReal(0)):
+            raise RuntimeError('Could not define helical profile plane')
         plane = comp.constructionPlanes.add(inp)
         sketch = comp.sketches.add(plane)
-        sketch.name = 'SCAD helical section ' + str(len(profiles) + 1)
+        sketch.name = 'SCAD radius-law profile (regenerate from SCAD)'
         center = sketch.modelToSketchSpace(core.Point3D.create(*(v / 10 for v in section['center'])))
         if abs(center.z) > 1e-6:
-            raise RuntimeError('Helical section center is outside radial/Z plane')
+            raise RuntimeError('Helical section center is outside its normal plane')
         circle = sketch.sketchCurves.sketchCircles.addByCenterRadius(center, section['radius'] / 10)
         circle.isFixed = True
-        if sketch.profiles.count != 1 or not sketch.isFullyConstrained:
-            raise RuntimeError('Expected one fully constrained helical circle')
-        profiles.append(sketch.profiles.item(0))
-        sketch.isLightBulbOn = False
-        plane.isLightBulbOn = False
-    inp = comp.features.loftFeatures.createInput(fusion.FeatureOperations.NewBodyFeatureOperation)
-    inp.isSolid, inp.isClosed = True, False
-    for profile in profiles:
-        inp.loftSections.add(profile)
-    feature = comp.features.loftFeatures.add(inp)
-    feature.name = 'SCAD smooth helical Loft (regenerate from SCAD)'
-    if feature.bodies.count != 1 or not feature.bodies.item(0).isSolid:
-        raise RuntimeError('Expected one solid helical Loft')
+        if sketch.profiles.count != 1 or not sketch.isFullyConstrained or not paths.isFullyConstrained:
+            raise RuntimeError('Expected fully constrained helical path and profile')
+        inp = comp.features.sweepFeatures.createInput(sketch.profiles.item(0), path,
+                                                     fusion.FeatureOperations.NewBodyFeatureOperation)
+        if len(curves) == 2:
+            inp.guideRail = comp.features.createPath(curves[1], False)
+            inp.profileScaling = fusion.SweepProfileScalingOptions.SweepProfileScaleOption
+        feature = comp.features.sweepFeatures.add(inp)
+        feature.name = 'SCAD helical radius-law Sweep (regenerate from SCAD)'
+        if feature.healthState != fusion.FeatureHealthStates.HealthyFeatureHealthState:
+            raise RuntimeError('Helical Sweep failed: ' + feature.errorOrWarningMessage)
+        if feature.bodies.count != 1 or not feature.bodies.item(0).isSolid:
+            raise RuntimeError('Expected one solid helical Sweep')
+        bodies.append(feature.bodies.item(0))
+        sketch.isLightBulbOn = plane.isLightBulbOn = False
+    paths.isLightBulbOn = False
+    if len(bodies) > 1:
+        tools = core.ObjectCollection.create()
+        for body in bodies[1:]:
+            tools.add(body)
+        inp = comp.features.combineFeatures.createInput(bodies[0], tools)
+        inp.operation = fusion.FeatureOperations.JoinFeatureOperation
+        feature = comp.features.combineFeatures.add(inp)
+        feature.name = 'SCAD continuous rounded thread'
+        if feature.bodies.count != 1 or not feature.bodies.item(0).isSolid:
+            raise RuntimeError('Helical Sweep regions did not join into one solid')
     return feature
 
 

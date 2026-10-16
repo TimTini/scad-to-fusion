@@ -4,10 +4,33 @@ from scad2fusion.native_runtime import Frame
 
 
 class FilletSelectionTests(unittest.TestCase):
+    def test_round_corners_share_one_native_fillet(self):
+        from types import SimpleNamespace as Obj
+        from unittest.mock import Mock
+        from scad2fusion.native_runtime import NativeBuilder
+        from scad2fusion.planar import Scalar
+        def edge(r,z):
+            return Obj(geometry=Obj(objectType='adsk::core::Circle3D',radius=r/10,
+                                   center=Obj(x=0,y=0,z=z/10)))
+        body = Obj(edges=[edge(10,0),edge(8,2)])
+        builder = object.__new__(NativeBuilder)
+        builder.comp, builder.core = Mock(), Mock()
+        builder.collection = lambda items:items
+        builder.expression = lambda value:value.text
+        builder.comp.features.filletFeatures.add.return_value.bodies = ['rounded']
+        corners = [{'position':(Scalar(10),Scalar(0)), 'radius':{'value':1,'text':'r1'}},
+                   {'position':(Scalar(8),Scalar(2)), 'radius':{'value':2,'text':'r2'}}]
+        self.assertEqual(builder.round_corners(body,corners,1),['rounded'])
+        builder.comp.features.filletFeatures.createInput.assert_called_once()
+        builder.comp.features.filletFeatures.add.assert_called_once()
+        self.assertEqual(builder.comp.features.filletFeatures.createInput.return_value.edgeSetInputs.
+                         addConstantRadiusEdgeSet.call_count,2)
+
     def test_helical_plan_accepts_reflection_but_preserves_anisotropic_meshes(self):
         from test_helical import tube
+        import math
         from scad2fusion.native_geometry import helical_plan
-        points, faces = tube()
+        points, faces = tube(fade_angle=math.pi/4)
         args = {'points':points, 'faces':faces}
         mirrored = helical_plan(args, Frame([[-2,0,0],[0,2,0],[0,0,2]]))
         self.assertIsNotNone(mirrored)
@@ -15,6 +38,8 @@ class FilletSelectionTests(unittest.TestCase):
         self.assertAlmostEqual(mirrored['sections'][0]['radius'], .05)
         self.assertIsNone(helical_plan(args, Frame([[2,0,0],[0,2,0],[0,0,3]])))
         self.assertIsNone(helical_plan(args, Frame([[1,.5,0],[0,1,0],[0,0,1]])))
+        many_points, many_faces = tube()
+        self.assertIsNone(helical_plan({'points':many_points,'faces':many_faces},Frame()))
 
     def test_selects_exact_axial_corner_and_rejects_ambiguity(self):
         from types import SimpleNamespace as Obj

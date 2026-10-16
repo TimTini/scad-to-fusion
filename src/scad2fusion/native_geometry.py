@@ -3,6 +3,7 @@ import math
 from .planar import Scalar
 from .helical import recognize_helical_sections, select_sections
 from .round_recovery import recover_quarter_rounds
+from .helix_curve import split_helical_sections
 
 
 def revolve_round_plan(node, frame, parameters=None):
@@ -37,6 +38,8 @@ def helical_plan(args, frame):
                  'center':[s['center'][0]*scales[0],s['center'][1]*scales[1]*sense,s['center'][2]*scales[2]],
                  'radius':s['radius']*scales[0]}
                 for s in select_sections(helix['sections'])]
+    if split_helical_sections(sections) is None:
+        return None
     return {'axes':axes, 'sections':sections, 'profile_sagitta_mm':helix['profile_sagitta']*scales[0]}
 
 

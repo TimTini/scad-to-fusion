@@ -8,6 +8,23 @@ from scad2fusion.native_runtime import Frame, pattern_spec, ordered_loop, batch_
 
 
 class RuntimePlanningTests(unittest.TestCase):
+    def test_timeline_repetition_counts_alternating_sketch_plane_blocks(self):
+        from scad2fusion.native_runtime import timeline_repetition
+        self.assertEqual(timeline_repetition(['Sketch','Plane']*8)['repetitions'],8)
+        self.assertEqual(timeline_repetition(['Fillet']*6)['repetitions'],6)
+        self.assertLessEqual(timeline_repetition(['Sketch','Revolve','Fillet','Sketch','Sweep'])['repetitions'],5)
+
+    def test_native_report_rejects_more_than_five_repetitions(self):
+        from types import SimpleNamespace as Obj
+        from scad2fusion.native_runtime import native_report
+        class Feature:
+            pass
+        timeline = Obj(count=6, item=lambda i:Obj(entity=Obj(objectType='Sketch')))
+        design = Obj(computeAll=lambda:True, timeline=timeline)
+        builder = Obj(fusion=Obj(Feature=Feature))
+        with self.assertRaisesRegex(RuntimeError,'more than five'):
+            native_report(design,builder)
+
     def test_expanded_loop_count_and_resolution_are_rebuild_inputs(self):
         for source,name in [('n=2;for(i=[0:n])translate([i*3,0,0])cube(1);','n'),
                             ('segments=24;cylinder(h=2,r=3,$fn=segments);','segments')]:

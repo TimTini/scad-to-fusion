@@ -1,6 +1,16 @@
 # Hộp bàn chải điện — kiểm chứng converter
 
-## Bản native đơn giản hóa
+## Bản giới hạn chuỗi dựng hình
+
+Implementation hiện tại dùng tối đa 5 Sweep theo luật bán kính cho mỗi ren, tất cả đường dẫn nằm trong một sketch 3D. Mỗi thân/nắp dùng một Fillet nhiều edge set. Runtime kiểm tra block timeline lặp liên tiếp và từ chối quá 5 lần. Kiểm chứng mới được ghi riêng ở checkpoint và bằng chứng compact, không thay số liệu lịch sử bên dưới.
+
+Trong Fusion 2705.1.30, layout thường/đổi chiều cao/đổi bán kính bo đều có **49 mục timeline**, bản assembled có **50 mục**. Chuỗi lặp dài nhất là Plane → Sketch → Sweep, **5 lần**; không dùng timeline group để che phép dựng. Layout có **2 Fillet, 10 Sweep, 0 Loft, 0 BaseFeature**. Thân có 35 mặt/57 cạnh, nắp có 12 mặt/14 cạnh. Tất cả 5 ca native đều khỏe và đủ ràng buộc; 15 ca native hồi quy cũ có chuỗi lặp dài nhất 4 lần. 130 test offline, build wheel và nạp script độc lập bằng Python `-I -S` đã đạt.
+
+Bán kính bo vẫn liên kết tham số, ren cập nhật bằng sinh lại script. Cấu hình cố ý dùng tiết diện ren 12 cạnh tiếp tục giữ polygon/BaseFeature. Hình học ren Sweep dùng tiết diện vuông góc đường xoắn; so sánh với tiết diện radial/Z trong SCAD là kiểm chứng riêng, không được suy ra chỉ từ số feature hay trạng thái native khỏe.
+
+Cả **5 phép đối chiếu mesh** của bản compact đều đạt: sai lệch bề mặt lấy mẫu lớn nhất **0,010049 mm**, thể tích **0,012907%**, symmetric difference **0,055505%**; bounds, số component kín và vòng mặt cắt đều khớp theo ngưỡng hiện có. [Bằng chứng compact](validation/compact-native-validation.json) ghi riêng native, mesh, regression, build và SHA256. Script bàn giao có SHA256 `6ad636fffa1304f6d62fe004e318538edae2504fd32bbd34879bfce8113e2cd8`, nằm trong `output/compact/HopBanChaiDien`; ZIP mới `dist/HopBanChaiDien-compact-fusion.zip` có đúng năm file và CRC đã kiểm tra. Hai output cũ được giữ nguyên. Kiểm chứng in/lắp thực tế giữ trạng thái `not_run`.
+
+## Bản Fillet/Loft trước giới hạn timeline — commit 83f34ab
 
 Nhánh `work/analytic-geometry` đã tích hợp Revolve với **10 Fillet native** nối biểu thức bán kính và **2 Loft ren tiết diện tròn**. Cấu hình mặc định có hai solid: thân **33 mặt/51 cạnh**, nắp **10 mặt/9 cạnh**; không dùng BaseFeature. Các cung 90° được nhận dạng từ công thức tâm/bán kính/cặp sin-cos, tạo profile nhọn rồi Fillet. Ren giữ pitch, phase, đoạn thu nhỏ hai đầu; thay đổi ren vẫn cần sinh lại script.
 

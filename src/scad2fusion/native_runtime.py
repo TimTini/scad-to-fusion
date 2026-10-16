@@ -10,7 +10,7 @@ import ast
 from .planar import Scalar, Region
 from .units import fusion_expression, expression_ast
 from .native_geometry import revolve_profile_frame, revolve_placement, polyhedron_mesh, create_polyhedron_body, revolve_corner_edge, helical_plan, revolve_round_plan
-from .helical import create_helical_loft
+from .helical import create_helical_sweep
 
 
 def _s(value):
@@ -214,7 +214,7 @@ def validate_program(program):
                 polyhedron_mesh(node['args'], frame)
                 plan = helical_plan(node['args'], frame)
                 representations.append({'line':node.get('line',1), 'source':'polyhedron',
-                    'native':'smooth_helical_loft' if plan else 'faceted_base_feature',
+                    'native':'smooth_helical_sweep' if plan else 'faceted_base_feature',
                     'source_faces':len(node['args']['faces']),
                     'sections':len(plan['sections']) if plan else 0})
                 deps(node['args'].get('points', []))
@@ -222,7 +222,7 @@ def validate_program(program):
                 rebuild.update(n.id for value in frame.origin for n in ast.walk(expression_ast(value.text))
                                if isinstance(n,ast.Name) and n.id in program.get('parameters',{}))
                 if plan:
-                    approximations.add('Recognized helix uses circular radial/Z Loft sections with source pitch/phase/taper; polygon-to-circle and Loft approximation require mesh comparison; geometry changes require regeneration')
+                    approximations.add('Recognized helix uses at most five round-profile Sweeps split at source radius-law corners, sharing one path sketch; path approximation is within 0.001 mm. Sweep orientation and polygon-to-circle differences require mesh comparison; geometry changes require regeneration')
                 else:
                     approximations.add('Polyhedron uses original planar faces as a fixed native BRep base feature; regenerate to change its geometry')
             elif op == 'rotate_extrude':
@@ -492,20 +492,23 @@ class NativeBuilder:
         sketch.isVisible = False
         bodies = list(feature.bodies)
         if rounded:
-            for corner in rounded['fillets']:
-                if len(bodies) != 1:
-                    raise RuntimeError('Rounded Revolve requires one connected body')
-                r, z = corner['position']
-                edge = revolve_corner_edge(bodies[0], r.value*scales[0], z.value*scales[2])
-                inp = self.comp.features.filletFeatures.createInput()
-                radius = _s(corner['radius']) * scales[0]
-                inp.edgeSetInputs.addConstantRadiusEdgeSet(self.collection([edge]),
-                    self.core.ValueInput.createByString(self.expression(radius)), False)
-                self.stage = 'SCAD fillet ' + radius.text
-                fillet = self.comp.features.filletFeatures.add(inp)
-                fillet.name = self.stage
-                bodies = list(fillet.bodies)
+            if len(bodies) != 1:
+                raise RuntimeError('Rounded Revolve requires one connected body')
+            bodies = self.round_corners(bodies[0], rounded['fillets'], scales[0])
         return self.place_bodies(bodies, frame, axes)
+
+    def round_corners(self, body, corners, scale):
+        inp = self.comp.features.filletFeatures.createInput()
+        for corner in corners:
+            r, z = corner['position']
+            edge = revolve_corner_edge(body, r.value*scale, z.value*scale)
+            radius = _s(corner['radius']) * scale
+            inp.edgeSetInputs.addConstantRadiusEdgeSet(self.collection([edge]),
+                self.core.ValueInput.createByString(self.expression(radius)), False)
+        self.stage = 'SCAD source roundings'
+        feature = self.comp.features.filletFeatures.add(inp)
+        feature.name = self.stage
+        return list(feature.bodies)
 
     def place_bodies(self, bodies, frame, axes):
         if any(abs(v.value)>1e-10 for v in frame.origin) or any(abs(v-(1 if i==j else 0))>1e-10 for j,axis in enumerate(axes) for i,v in enumerate(axis)):
@@ -524,7 +527,7 @@ class NativeBuilder:
         points, faces = polyhedron_mesh(node['args'], frame)
         plan = helical_plan(node['args'], frame)
         if plan is not None:
-            feature = create_helical_loft(self.core, self.fusion, self.comp, plan['sections'])
+            feature = create_helical_sweep(self.core, self.fusion, self.comp, plan['sections'])
             return self.place_bodies(list(feature.bodies), frame, plan['axes'])
         body = create_polyhedron_body(self.core,self.fusion,points,faces)
         feature = self.comp.features.baseFeatures.add()
@@ -605,6 +608,19 @@ class NativeBuilder:
         return True
 
 
+def timeline_repetition(types):
+    result = {'repetitions':1 if types else 0, 'block':[]}
+    for width in range(1, len(types)//2 + 1):
+        for start in range(len(types)-width*2+1):
+            block = types[start:start+width]
+            count = 1
+            while types[start+count*width:start+(count+1)*width] == block:
+                count += 1
+            if count > result['repetitions']:
+                result = {'repetitions':count, 'block':block}
+    return result
+
+
 def native_report(design, builder):
     fusion = builder.fusion
     if not design.computeAll(): raise RuntimeError('Fusion computeAll failed')
@@ -614,6 +630,10 @@ def native_report(design, builder):
         if isinstance(entity, fusion.Feature) and entity.healthState != fusion.FeatureHealthStates.HealthyFeatureHealthState:
             errors.append(entity.name + ': ' + entity.errorOrWarningMessage)
     if errors: raise RuntimeError('Feature health: ' + '; '.join(errors))
+    repetition = timeline_repetition([design.timeline.item(i).entity.objectType
+                                     for i in range(design.timeline.count)])
+    if repetition['repetitions'] > 5:
+        raise RuntimeError('Native construction repeats a timeline block more than five times: ' + str(repetition))
     bodies = []
     for body in design.rootComponent.bRepBodies:
         b = body.boundingBox
@@ -627,8 +647,10 @@ def native_report(design, builder):
                 for p in design.rootComponent.features.rectangularPatternFeatures]
     return {'status': 'passed', 'fusion_version': builder.core.Application.get().version,
             'bodies': bodies, 'timeline_count': design.timeline.count, 'patterns': patterns, 'sketches': sketches,
+            'timeline_repetition':repetition,
             'native_features':{'fillet':design.rootComponent.features.filletFeatures.count,
                                'loft':design.rootComponent.features.loftFeatures.count,
+                               'sweep':design.rootComponent.features.sweepFeatures.count,
                                'base':design.rootComponent.features.baseFeatures.count}}
 
 
