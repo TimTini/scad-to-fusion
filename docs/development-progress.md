@@ -62,3 +62,7 @@ Từ khóa: simple geometry, bounded timeline, Sweep, Fillet, G1, folder deliver
 - **Giới hạn:** tiết diện Sweep khác polygon radial/Z nên native khỏe và ít feature chưa chứng minh đúng hình. Sai lệch bề mặt là phép lấy mẫu, không phải Hausdorff chính xác. Ren cần sinh lại khi đổi tham số; mesh ít cạnh có chủ đích hoặc ngoài miền nhận dạng vẫn có thể giữ BaseFeature. In/lắp thực tế chưa kiểm chứng. Đối chiếu source/build Fusion hiện tại trước khi tái sử dụng kết quả.
 
 Checkpoint self-learning: đối chiếu lại source, bằng chứng JSON và thư mục bàn giao hiện có; cập nhật hướng dẫn bàn giao ở README. Chỉ sửa tài liệu, không chạy lại Fusion hay thay script đã kiểm chứng.
+
+## Dustpan intake — 2026-10-16
+
+Đã thử source dustpan hiện hành, SHA256 `9f8a284a37d630a114eb1b5773fc276a5a30d8fef1dacd14db03247d8cb54db2`. Converter dừng ở dòng53 (`each concat`); chưa có package hay native output mới. OpenSCAD Manifold xuất source thành công, mesh một component kín 206×215×250mm. Sáu probe độc lập xác nhận thiếu each, comprehension filter, multmatrix, hull, solid intersection và offset(delta). [Báo cáo và thứ tự mở rộng](dustpan-validation.md) giữ riêng source/offline/native evidence; local artifacts ở `work/dustpan-converter-001/`. Source và package dựng riêng có sẵn được giữ nguyên. Lượt thử chỉ sửa tài liệu, không triển khai extension hoặc chạy lại Fusion. Giữ bàn giao dạng thư mục.
