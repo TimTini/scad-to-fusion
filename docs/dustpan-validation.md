@@ -28,6 +28,19 @@ Mỗi ca có một mesh kín; số vòng ở ba mặt cắt khớp. Phép đo d�
 
 ## Cách dựng và giới hạn cập nhật
 
+### Bài học dùng lại: giảm cạnh phải kiểm chứng cả hình học
+
+**Trạng thái:** đã kiểm chứng trên dustpan, ngày 2026-10-16, Fusion 2705.1.30. Áp dụng khi contour lấy mẫu tạo mặt nhỏ ở chỗ chuyển line/arc hoặc arc/arc; chưa phải quy trình chữa mọi BRep. Người dùng xác nhận ưu tiên giữ hình, chỉ giảm cạnh thừa.
+
+1. Giữ output cũ và hash source. Đo face/edge, bounds, thể tích, health và timeline trước khi sửa. Kiểm tra nguyên nhân ở contour/recovery trước khi thêm feature dọn mặt. Hai cung liên tiếp phải dùng chung endpoint; bỏ qua endpoint khi quét run kế tiếp đã tạo đoạn thẳng ngắn giả trong ca này (`recover_polygon_curves`).
+2. Với line/arc bị ngăn bởi chord lấy mẫu, chỉ khôi phục tiếp tuyến khi các guard trong `join_tangent_path_curves` cùng đạt: support tiếp xúc đúng circle, hướng tangent cùng chiều, mở rộng đúng hướng, giới hạn góc và khoảng cách pháp tuyến. Chỉ đo khoảng cách từ tiếp điểm tới bridge là chưa đủ: bridge dài có thể đi gần tiếp điểm nhưng phần còn lại lệch lớn. Giữ regression cho bridge lệch pháp tuyến và cung ngược chiều trong `tests/test_planar.py`.
+3. Chạy test, sinh **thư mục mới**, chạy đúng script đó trong Fusion và xuất mesh của chính bản bàn giao. So cả với SCAD lẫn output đã chấp nhận bằng `tools/compare_meshes.py`, kèm ba mặt cắt; ghi hash script/STL. Health, body count và bounds đúng chưa chứng minh cavity hoặc bề mặt đúng.
+4. Báo riêng raw comparator và contract của project; không đổi `failed` thành `passed` ngầm. Gắn sai số lấy mẫu với phương pháp đo, không gọi đó là chứng minh Hausdorff chính xác. Chỉ công bố giảm cạnh sau khi đo lại bản cuối với đầy đủ guard.
+
+**Bằng chứng:** 176 test offline đã đạt với `uv run --extra audit python -m unittest discover -s tests`; bản standalone cuối thực chạy Fusion đạt 97 mặt / 267 cạnh, thay vì 104 / 286. Kết quả runtime, so mesh, ngưỡng và hash ở [hồ sơ giảm cạnh](validation/dustpan-edge-validation.json). Đây là bằng chứng của lần chạy đã lưu, không tự bảo đảm phiên Fusion hoặc source mới. In/lắp, slicer và kiểm tra self-intersection độc lập vẫn chưa chạy.
+
+**Các hướng đã thử và loại:** lọc điểm thẳng hàng không giảm topology vì kernel đã xử lý; thêm ba rail cho Loft không giảm cạnh nhưng tăng timeline; DeleteFace/heal 10–11 mặt nhỏ làm kín cavity, tăng thể tích từ khoảng 284.731 lên 1.612.316 mm³ dù feature vẫn khỏe. Không dùng diện tích mặt nhỏ làm tiêu chí xóa tự động. Candidate 91 mặt / 251 cạnh thiếu guard đã được thay bằng bản bảo thủ 97 / 267. Chi tiết thử nghiệm giữ trong [checkpoint](development-progress.md#edge-reduction-follow-up--verified-final-candidate).
+
 Frontend bổ sung comprehension `each`/`if`, cache theo dependency bắc cầu, implicit union của module nhiều khối, `multmatrix`, `hull`, `offset(delta)`. Polygon nhiều mẫu được khôi phục line/arc/circle theo ngưỡng sai số. Nhận dạng dựa trên hình học, không theo tên file/module/tham số.
 
 - Sector góc sau dùng Revolve, giữ các điểm đổi luật bán kính. Loft toàn vùng đã thử nhưng bị loại vì làm sai hình dù feature khỏe.
