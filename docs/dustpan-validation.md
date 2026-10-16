@@ -1,5 +1,15 @@
 # Dustpan — converter native, 2026-10-16
 
+## Bản giảm cạnh, giữ hình
+
+Bản mới tại `output/dustpan-clean-final/Dustpan` đã chạy trực tiếp trong Fusion 2705.1.30: **97 mặt / 267 cạnh**, so với 104 mặt / 286 cạnh của bản trước (giảm 19 cạnh, 6,64%). Một solid khỏe, mọi sketch đủ ràng buộc; timeline vẫn 132 mục, block lặp tối đa 5 lần, 2 Fillet / 5 Loft / 2 Sweep / 0 BaseFeature. 176 test offline đạt. Số liệu và hash của đúng bản bàn giao nằm trong [dustpan-edge-validation.json](validation/dustpan-edge-validation.json).
+
+Sửa nguồn recovery để hai cung dùng chung endpoint và khôi phục tiếp tuyến line/arc ở đường Sweep khi đoạn nối bị lấy mẫu thiếu điểm tiếp xúc. Chỉ gộp khi support line tiếp xúc đúng đường tròn, hướng đi cùng chiều, endpoint lệch pháp tuyến tối đa 0,02 mm và phần mở rộng cung tối đa 15°. Giữ các chỗ nối không đủ điều kiện; không xóa mặt theo diện tích. Candidate 91 mặt / 251 cạnh trước khi siết điều kiện không phải bản bàn giao.
+
+Các số liệu 104 mặt / 286 cạnh và 172 test ở phần dưới ghi nhận checkpoint trước khi giảm cạnh; source và các output cũ được giữ lại. Đây là cải thiện nhỏ về topology, chưa loại hết đường chia mặt trên Fusion.
+
+So với bản bàn giao trước, mesh mới có sai lệch bề mặt lấy mẫu **0,007329 mm**, sai lệch thể tích **0,00000322%**; ba mặt cắt giữ nguyên số vòng. So với SCAD, sai lệch lấy mẫu **0,117960 mm**, thể tích **0,010017%**, symmetric difference **0,029425%**; một mesh kín, bounds khớp. Đạt contract dustpan 0,15 mm / 0,25%; comparator chung 0,05 mm vẫn báo `failed` và được giữ nguyên trong hồ sơ. Phép đo lấy mẫu không phải chứng minh Hausdorff chính xác.
+
 Converter đọc trực tiếp source và sinh package standalone; không gọi builder Dustpan dựng riêng. Fixture `tests/fixtures/dustpan.scad` có SHA256 `9f8a284a37d630a114eb1b5773fc276a5a30d8fef1dacd14db03247d8cb54db2`, khớp source đầu vào được giữ nguyên. Bàn giao cả thư mục `output/dustpan-final/Dustpan`, không ZIP.
 
 ## Kết quả native và kiểm chứng

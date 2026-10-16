@@ -38,6 +38,40 @@ class ScalarTests(unittest.TestCase):
 
 
 class PlanarRegionTests(unittest.TestCase):
+    def test_tangent_path_preserves_bridge_outside_normal_tolerance(self):
+        from scad2fusion.planar_recovery import join_tangent_path_curves
+        def p(angle):
+            return (Scalar(100*math.cos(math.radians(angle))),Scalar(100*math.sin(math.radians(angle))))
+        arc={'kind':'arc','center':(Scalar(0),Scalar(0)),'radius':Scalar(100),'start':p(120),'mid':p(110),'end':p(100)}
+        q=(Scalar(0.001),Scalar(100))
+        curves=[arc,{'kind':'line','start':arc['end'],'end':q},{'kind':'line','start':q,'end':(Scalar(10),Scalar(100))}]
+        self.assertEqual(join_tangent_path_curves(curves),curves)
+
+    def test_tangent_path_preserves_opposite_arc_direction(self):
+        from scad2fusion.planar_recovery import join_tangent_path_curves
+        def p(angle):
+            return (Scalar(100*math.cos(math.radians(angle))),Scalar(100*math.sin(math.radians(angle))))
+        arc={'kind':'arc','center':(Scalar(0),Scalar(0)),'radius':Scalar(100),'start':p(60),'mid':p(75),'end':p(91)}
+        q=(Scalar(2),Scalar(100))
+        curves=[arc,{'kind':'line','start':arc['end'],'end':q},{'kind':'line','start':q,'end':(Scalar(10),Scalar(100))}]
+        self.assertEqual(join_tangent_path_curves(curves),curves)
+
+    def test_tangent_path_gap_closes_on_shared_circle_tangent(self):
+        from scad2fusion.planar_recovery import join_tangent_path_curves
+        end=(Scalar(-100*math.sin(math.pi/180)),Scalar(100*math.cos(math.pi/180)))
+        arc={'kind':'arc','center':(Scalar(0),Scalar(0)),'radius':Scalar(100),'start':(Scalar(-50),Scalar(100*math.sqrt(.75))),'mid':(Scalar(-25),Scalar(100*math.sqrt(.9375))),'end':end}
+        curves=[arc,{'kind':'line','start':end,'end':(Scalar(2),Scalar(100))},{'kind':'line','start':(Scalar(2),Scalar(100)),'end':(Scalar(10),Scalar(100))}]
+        result=join_tangent_path_curves(curves)
+        self.assertEqual(len(result),2)
+        self.assertAlmostEqual(result[0]['end'][0].value,0)
+        self.assertAlmostEqual(result[0]['end'][1].value,100)
+        self.assertEqual(result[0]['end'],result[1]['start'])
+    def test_tangent_sampled_arcs_share_endpoint_without_tiny_line(self):
+        points=[point(2*math.cos(i*math.pi/24),2*math.sin(i*math.pi/24)) for i in range(13)]
+        points += [point(math.cos(math.pi/2+i*math.pi/24),1+math.sin(math.pi/2+i*math.pi/24)) for i in range(1,13)]
+        points += [point(-1,-1),point(2,-1)]
+        region=Region(node('polygon',{'points':points}))
+        self.assertEqual([c['kind'] for c in region.curves],['arc','arc','line','line','line'])
     def test_uniform_planar_scale_updates_circle_radius(self):
         for factor in (2,-2):
             region=Region(node('scale',{'v':[Scalar(factor),Scalar(factor)]},[node('circle',{'r':Scalar(5)})]))

@@ -2,7 +2,7 @@
 
 from .planar import Region
 from .planar import Scalar
-from .planar_recovery import recover_polygon_curves
+from .planar_recovery import recover_polygon_curves, join_tangent_path_curves
 import math
 
 
@@ -89,6 +89,7 @@ def translated_sweep(builder,plan,frame,start):
     curves=recover_polygon_curves(path_points)
     # Recovery treats the sequence as closed; discard only its closing edge.
     curves=curves[:-1]
+    curves=join_tangent_path_curves(curves)
     sketch=builder.comp.sketches.add(builder.comp.xYConstructionPlane)
     sketch.name='SCAD translated-profile path'
     sketch.is3D=True

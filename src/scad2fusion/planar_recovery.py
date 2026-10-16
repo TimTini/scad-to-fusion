@@ -10,6 +10,60 @@ _DEFAULT_SAGITTA_MM = 0.02
 _FIT_TOLERANCE_MM = 1e-5
 
 
+def join_tangent_path_curves(curves, tolerance=0.02):
+    """Recover a tangent junction obscured by a short sampled bridge chord.
+
+    Only an existing line support exactly tangent to the recovered circle is
+    eligible. The recovered junction must lie on the bridge interval within
+    the declared sampling tolerance. This operates on an open path.
+    """
+    result=[dict(c) for c in curves]
+    index=0
+    while index+2<len(result):
+        first,bridge,last=result[index:index+3]
+        if bridge['kind']!='line' or {first['kind'],last['kind']}!={'line','arc'}:
+            index+=1;continue
+        arc=first if first['kind']=='arc' else last
+        line=last if first['kind']=='arc' else first
+        a,b=(_point_value(line[k]) for k in ('start','end'))
+        center=_point_value(arc['center']);dx,dy=b[0]-a[0],b[1]-a[1]
+        length2=dx*dx+dy*dy
+        if length2<1e-18:index+=1;continue
+        factor=((center[0]-a[0])*dx+(center[1]-a[1])*dy)/length2
+        tangent=(a[0]+factor*dx,a[1]+factor*dy)
+        if (first['kind']=='line' and factor<1) or (last['kind']=='line' and factor>0):
+            index+=1;continue
+        if abs(math.dist(tangent,center)-arc['radius'].value)>1e-5:
+            index+=1;continue
+        old=_point_value(arc['end'] if first['kind']=='arc' else arc['start'])
+        length=math.sqrt(length2)
+        if abs((old[0]-a[0])*dy-(old[1]-a[1])*dx)/length>tolerance:
+            index+=1;continue
+        start,mid=(_point_value(arc[k]) for k in ('start','mid'))
+        turn=math.remainder(math.atan2(mid[1]-center[1],mid[0]-center[0])-math.atan2(start[1]-center[1],start[0]-center[0]),2*math.pi)
+        direction=1 if turn>0 else -1
+        rx,ry=tangent[0]-center[0],tangent[1]-center[1]
+        if abs(turn)<1e-12 or direction*(-ry*dx+rx*dy)/(arc['radius'].value*length)<1-1e-8:
+            index+=1;continue
+        angle=math.remainder(math.atan2(tangent[1]-center[1],tangent[0]-center[0])-math.atan2(old[1]-center[1],old[0]-center[0]),2*math.pi)
+        if abs(angle)>math.radians(15):index+=1;continue
+        if (first['kind']=='arc' and angle*direction<0) or (last['kind']=='arc' and angle*direction>0):
+            index+=1;continue
+        p,q=(_point_value(bridge[k]) for k in ('start','end'))
+        vx,vy=q[0]-p[0],q[1]-p[1];span=vx*vx+vy*vy
+        if span<1e-18:index+=1;continue
+        t=((tangent[0]-p[0])*vx+(tangent[1]-p[1])*vy)/span
+        closest=(p[0]+t*vx,p[1]+t*vy)
+        if not 0<=t<=1 or math.dist(tangent,closest)>tolerance:
+            index+=1;continue
+        template=bridge['start']
+        joint=tuple(_scalar_like(template[i],tangent[i]) for i in range(2))
+        first['end']=joint;last['start']=joint
+        result[index:index+3]=[first,last]
+        index=max(0,index-1)
+    return result
+
+
 def _point_value(point: tuple[Any, Any]) -> tuple[float, float]:
     return point[0].value, point[1].value
 
@@ -151,7 +205,7 @@ def recover_polygon_curves(points: list[tuple[Any, Any]], sagitta_limit: float =
             best = (end, fitted)
         if best is not None:
             runs[start] = best
-            start = best[0] + 1
+            start = best[0]
         else:
             start += 1
 
