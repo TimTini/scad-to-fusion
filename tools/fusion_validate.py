@@ -40,7 +40,9 @@ def run(_context):
                         raise RuntimeError('Unexpected body count: ' + str(report['bodies']))
                     actual = [[min(b['bounds_mm'][0][i] for b in report['bodies']) for i in range(3)],
                               [max(b['bounds_mm'][1][i] for b in report['bodies']) for i in range(3)]]
-                    if any(abs(a-b) > 0.00001 for row, expected in zip(actual, variant['bounds_mm']) for a, b in zip(row, expected)):
+                    tolerance = variant.get('bounds_tolerance_mm',0.00001)
+                    report['bounds_tolerance_mm'] = tolerance
+                    if any(abs(a-b) > tolerance for row, expected in zip(actual, variant['bounds_mm']) for a, b in zip(row, expected)):
                         raise RuntimeError('Bounds mismatch: ' + str(actual))
                     if 'volume_mm3' in variant:
                         volume = sum(b['volume_mm3'] for b in report['bodies'])

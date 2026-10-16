@@ -4,6 +4,12 @@ from scad2fusion.units import infer_dimensions, fusion_expression
 
 
 class DimensionTests(unittest.TestCase):
+    def test_square_root_length_and_atan2_input_units(self):
+        definitions={'x':'10','y':'5','length':'sqrt(x^2+y^2)','angle':'atan2(y,x)'}
+        dims=infer_dimensions(definitions,[('length',1),('angle',0)])
+        self.assertEqual(dims,{'x':1,'y':1,'length':1,'angle':0})
+        self.assertIn('sqrt(',fusion_expression('sqrt(x^2+y^2)',dims,1))
+
     def test_fusion_minmax_use_semicolon_and_binary_nesting(self):
         self.assertEqual(fusion_expression('max(2,3)',{},0),'max(2; 3)')
         self.assertEqual(fusion_expression('min(1,2,3)',{},0),'min(min(1; 2); 3)')

@@ -419,14 +419,23 @@ class Parser:
             return ExprAst("list", [], start.line)
         if self.current.text == "for":
             clauses: list[tuple[str, object]] = []
-            while self.current.text in {"for", "let"}:
+            while self.current.text in {"for", "let", "if", "each"}:
                 if self.current.text == "for":
                     self.take()
                     bindings = self.parameters_bindings()
                     clauses.append(("for", bindings))
-                else:
+                elif self.current.text == "let":
                     self.take()
                     clauses.append(("let", self.let_bindings()))
+                elif self.current.text == "if":
+                    self.take()
+                    self.expect("(")
+                    condition = self.expression()
+                    self.expect(")")
+                    clauses.append(("if", condition))
+                else:
+                    self.take()
+                    clauses.append(("each", None))
             body = self.expression()
             self.expect("]")
             return ExprAst("comprehension", (clauses, body), start.line)

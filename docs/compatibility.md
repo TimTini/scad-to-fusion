@@ -1,5 +1,15 @@
 # Compatibility 0.1.0
 
+## Extension dustpan, 2026-10-16
+
+Phần này cập nhật các giới hạn cũ được ghi bên dưới: frontend hỗ trợ comprehension `each`/lọc `if`, `pow`/`atan2`, implicit union của module nhiều khối; `multmatrix` affine 4×4 trực giao không shear. Giao solid nhận tập target và một clipping body liên thông. `hull` 2D nhận các circle analytic cùng bán kính, kể cả qua loop; `offset(delta)` nhận simple polygon/circle, dùng miter và từ chối collapse/tự giao. Các contour khôi phục/offset/hull numeric được ghi rebuild. `$fn <= 12` giữ polygon có chủ đích.
+
+Shell ring-major có cap và triangulated side quads, winding kín nhất quán được xét theo hình học: sector đồng tâm → Revolve giữ điểm đổi bán kính; offset quarter-circle → Fillet với biên giảm bán kính 0,01 mm được khai báo và scale đồng đều; suffix dịch tiết diện theo một tọa độ → parallel Sweep và prefix chia tại điểm đổi luật; shell khác → Loft tối đa 5 profile và extrusion tail riêng. Các profile layered cần normal thẳng hàng trục toàn cục; sector có kiểm tra frame riêng. Residual nội suy đỉnh 2D trong layer plan không phải bound sai số surface native.
+
+Các vùng numeric cần rebuild và phải so mesh theo contract input trước khi nhận bàn giao. Fusion thiếu `atan2`: derived value được đóng băng tường minh, giữ `source_expression` và nhãn rebuild. Tên trùng đơn vị Fusion ánh xạ qua `fusion_name`. [Kiểm chứng dustpan](dustpan-validation.md) dùng ngưỡng source 0,15 mm, khác comparator mặc định 0,05 mm; raw kết quả mặc định giữ trạng thái riêng.
+
+## Miền hỗ trợ trước extension
+
 Input khay sử dụng mm. Converter suy chiều dài/số lượng từ usage và quan hệ biểu thức; source OpenSCAD vốn không khai báo kiểu đơn vị. Các tham số không tham gia geometry của cấu hình hiện tại có metadata không đơn vị. Quan hệ đơn vị mâu thuẫn hoặc mơ hồ trong geometry được từ chối.
 
 Supported và có test offline: số hữu hạn, forward references ở top level, module/function params và local bindings, vectors/ranges, if/else/ternary, assertions, Cartesian loops, `let`, indexing và list comprehensions lồng nhau. Hàm có whitelist: xem `_function` trong frontend; gồm `concat`, `len`, `norm`, `str` và các hàm số học. CLI `-D` nhận JSON number/boolean/string/array; string selector và array giữ vai trò cấu hình khi sinh script. Boolean được biểu diễn thành 0/1 trong User Parameters và thường là cấu hình rebuild.

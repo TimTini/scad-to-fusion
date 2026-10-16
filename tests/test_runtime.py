@@ -8,6 +8,31 @@ from scad2fusion.native_runtime import Frame, pattern_spec, ordered_loop, batch_
 
 
 class RuntimePlanningTests(unittest.TestCase):
+    def test_layered_section_frame_increases_along_each_source_axis(self):
+        from scad2fusion.native_layers import section_frame
+        from scad2fusion.planar import Scalar
+        for axis in range(3):
+            frame=section_frame(Frame(),axis,10)
+            start=frame.point([Scalar(0),Scalar(0),Scalar(0)])
+            end=frame.point([Scalar(0),Scalar(0),Scalar(2)])
+            self.assertEqual(start[axis].value,10)
+            self.assertEqual(end[axis].value,12)
+
+    def test_matrix_transform_composes_local_translation_and_basis(self):
+        from scad2fusion.planar import Scalar
+        frame = Frame(origin=[Scalar(10), Scalar(20), Scalar(30)])
+        matrix = [[0,0,1,4],[1,0,0,5],[0,1,0,6],[0,0,0,1]]
+        result = frame.transformed({'op':'multmatrix','args':{'m':matrix}})
+        self.assertEqual([p.value for p in result.point([Scalar(1),Scalar(2),Scalar(3)])],[17,26,38])
+        with self.assertRaisesRegex(ValueError,'affine'):
+            frame.transformed({'op':'multmatrix','args':{'m':matrix[:3]+[[0,0,1,1]]}})
+        with self.assertRaisesRegex(ValueError,'orthogonal'):
+            frame.transformed({'op':'multmatrix','args':{'m':[[1,1,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]}})
+
+    def test_solid_intersection_is_validated_as_child_solids(self):
+        program = json_value(compile_source('intersection(){cube(2);translate([1,0,0])cube(2);}'))
+        self.assertIn('intersection', validate_program(program)['operations'])
+
     def test_timeline_repetition_counts_alternating_sketch_plane_blocks(self):
         from scad2fusion.native_runtime import timeline_repetition
         self.assertEqual(timeline_repetition(['Sketch','Plane']*8)['repetitions'],8)

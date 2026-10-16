@@ -8,6 +8,54 @@ from scad2fusion.generator import generate_package, expanded_rebuild_parameters
 
 
 class GeneratorTests(unittest.TestCase):
+    def test_dustpan_full_source_generates_bounded_analytic_plans(self):
+        with tempfile.TemporaryDirectory() as directory:
+            report=generate_package(Path(__file__).parent/'fixtures/dustpan.scad',Path(directory)/'Scoop')
+            plans=report['capabilities']['representations']
+            self.assertEqual(len(plans),7)
+            self.assertEqual(sorted(p['native'] for p in plans),sorted(['bounded_layered_loft']+['layered_sector_revolve']*2+['offset_cove_fillet']*2+['translated_profile_sweep']*2))
+            self.assertTrue(all(p['sections']<=5 for p in plans))
+            self.assertEqual(report['parameters']['hr']['fusion_name'],'scad_hr')
+            self.assertTrue(report['capabilities']['frozen_derived_parameters'])
+
+    def test_embedded_planar_recovery_matches_package(self):
+        import runpy, math
+        with tempfile.TemporaryDirectory() as directory:
+            source=Path(directory)/'circle.scad'
+            source.write_text('linear_extrude(1) polygon([for(i=[0:63]) [5*cos(i*360/64),5*sin(i*360/64)]]);')
+            target=Path(directory)/'CircleCase'
+            generate_package(source,target)
+            ns=runpy.run_path(str(target/'CircleCase.py'))
+            polygon=ns['PROGRAM']['geometry']['children'][0]['children'][0]
+            region=ns['Region'](polygon)
+            self.assertTrue(region.requires_rebuild)
+            self.assertEqual([c['kind'] for c in region.curves],['circle'])
+
+    def test_fusion_unit_name_is_escaped_without_changing_source_binding(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source=Path(directory)/'units.scad'
+            source.write_text('hr=10;cube([hr,2,1]);')
+            report=generate_package(source,Path(directory)/'UnitsCase')
+            self.assertEqual(report['parameters']['hr']['fusion_name'],'scad_hr')
+    def test_atan2_parameter_is_explicitly_frozen_with_source_formula(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source=Path(directory)/'angle.scad'
+            source.write_text('x=10;y=5;a=atan2(y,x);translate([x,y,0])rotate([0,0,a])cube(1);')
+            report=generate_package(source,Path(directory)/'Angle')
+            angle=report['parameters']['a']
+            self.assertEqual(angle['update'],'rebuild')
+            self.assertEqual(angle['source_expression'],'atan2(y, x)')
+            self.assertNotIn('atan2',angle['expression'])
+
+    def test_matrix_translation_units_and_rebuild(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory)/'matrix.scad'
+            source.write_text('shift=10;factor=2;multmatrix([[factor,0,0,shift],[0,1,0,0],[0,0,1,0],[0,0,0,1]])cube(1);')
+            report = generate_package(source,Path(directory)/'MatrixCase')
+            self.assertEqual(report['parameters']['shift']['unit'],'mm')
+            self.assertEqual(report['parameters']['factor']['unit'],'')
+            self.assertEqual(report['parameters']['shift']['update'],'rebuild')
+
     def test_real_case_selects_native_fillets_and_compact_sweeps(self):
         with tempfile.TemporaryDirectory() as directory:
             report = generate_package(Path(__file__).parent / 'fixtures/electric-toothbrush-case.scad',

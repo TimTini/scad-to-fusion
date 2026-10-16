@@ -72,9 +72,11 @@ class _Compiler:
         "scale",
         "linear_extrude",
         "offset",
+        "multmatrix",
         "union",
         "difference",
         "intersection",
+        "hull",
         "polygon",
         "rotate_extrude",
         "polyhedron",
@@ -103,6 +105,8 @@ class _Compiler:
         self.global_stack: list[str] = []
         self._module_stack: list[str] = []
         self._function_stack: list[str] = []
+        self._function_cache: dict[tuple[object, ...], Any] = {}
+        self._assignment_cache: dict[tuple[object, ...], Any] = {}
         self._expanded = 0
         self._comprehension_expanded = 0
         self._rebuild_parameters: set[str] = set()
@@ -202,11 +206,14 @@ class _Compiler:
             return any(value is not None and self._contains_function_call(value) for value in expr.value)
         if expr.kind == "comprehension":
             clauses, body = expr.value
-            return any(
-                self._contains_function_call(value)
-                for _, values in clauses
-                for _, value in values
-            ) or self._contains_function_call(body)
+            for kind, values in clauses:
+                if kind in {"for", "let"} and any(
+                    self._contains_function_call(value) for _, value in values
+                ):
+                    return True
+                if kind == "if" and self._contains_function_call(values):
+                    return True
+            return self._contains_function_call(body)
         return False
 
     def _names_in(self, expr: ExprAst) -> set[str]:
@@ -238,10 +245,70 @@ class _Compiler:
             clauses, body = expr.value
             names = self._names_in(body)
             for kind, values in clauses:
-                for _, value in values:
-                    names |= self._names_in(value)
+                if kind in {"for", "let"}:
+                    for _, value in values:
+                        names |= self._names_in(value)
+                elif kind == "if":
+                    names |= self._names_in(values)
             return names
         return set()
+
+    def _free_names(self, expr: ExprAst, bound: set[str] | None = None) -> set[str]:
+        """Find names read from the surrounding scope by an expression."""
+        bound = set() if bound is None else set(bound)
+        if expr.kind == "name":
+            return set() if expr.value in bound else {str(expr.value)}
+        if expr.kind == "literal":
+            return set()
+        if expr.kind in {"list", "range"}:
+            values = expr.value if expr.kind == "list" else expr.value
+            return set().union(*(self._free_names(value, bound) for value in values if value is not None))
+        if expr.kind == "unary":
+            return self._free_names(expr.value[1], bound)
+        if expr.kind == "binary":
+            return self._free_names(expr.value[1], bound) | self._free_names(expr.value[2], bound)
+        if expr.kind == "ternary":
+            return set().union(*(self._free_names(value, bound) for value in expr.value))
+        if expr.kind == "index":
+            return self._free_names(expr.value[0], bound) | self._free_names(expr.value[1], bound)
+        if expr.kind == "function":
+            return set().union(*(self._free_names(arg, bound) for _, arg in expr.value.args))
+        if expr.kind == "let":
+            bindings, body = expr.value
+            names: set[str] = set()
+            local = set(bound)
+            for name, value in bindings:
+                names |= self._free_names(value, local)
+                local.add(name)
+            return names | self._free_names(body, local)
+        if expr.kind == "comprehension":
+            clauses, body = expr.value
+            names: set[str] = set()
+            local = set(bound)
+            for kind, values in clauses:
+                if kind == "for":
+                    for name, value in values:
+                        names |= self._free_names(value, local)
+                        local.add(name)
+                elif kind == "let":
+                    for name, value in values:
+                        names |= self._free_names(value, local)
+                        local.add(name)
+                elif kind == "if":
+                    names |= self._free_names(values, local)
+            return names | self._free_names(body, local)
+        return set()
+
+    def _assignment_free_names(self, expr, assignments, scope):
+        names=self._free_names(expr)
+        pending=list(names)
+        while pending:
+            dependency=pending.pop()
+            if dependency in assignments and dependency not in scope:
+                extra=self._free_names(assignments[dependency])-names
+                names.update(extra)
+                pending.extend(extra)
+        return names
 
     def _global_value(self, name: str) -> Expr | list[Any] | _RangeValue:
         if name in self.global_cache:
@@ -265,6 +332,8 @@ class _Compiler:
     def _global_ref(self, name: str) -> Expr | list[Any] | _RangeValue:
         value = self._global_value(name)
         if isinstance(value, Expr):
+            if name.startswith("$"):
+                return _literal(value.value)
             return Expr(value.value, name, frozenset({name}))
         if isinstance(value, list):
             return value
@@ -301,7 +370,22 @@ class _Compiler:
                 if name in resolving:
                     chain = " -> ".join(resolving + (name,))
                     raise ScadError(f"cyclic local binding: {chain}", self.filename, expr.line)
-                value = self._eval(assignments[name], locals_, assignments, cache, resolving + (name,))
+                assignment = assignments[name]
+                free_names = self._assignment_free_names(assignment,assignments,locals_)
+                assignment_key = (
+                    id(assignment),
+                    tuple(sorted(
+                        (free_name, _value_cache_key(locals_[free_name]))
+                        for free_name in free_names
+                        if free_name in locals_
+                    )),
+                )
+                if assignment_key in self._assignment_cache:
+                    value = self._assignment_cache[assignment_key]
+                    cache[name] = value
+                    return value
+                value = self._eval(assignment, locals_, assignments, cache, resolving + (name,))
+                self._assignment_cache[assignment_key] = value
                 cache[name] = value
                 return value
             if name in self.assignments:
@@ -396,11 +480,16 @@ class _Compiler:
                     function_locals[name] = self._eval(default, function_locals, {}, {}, resolving)
                 else:
                     raise ScadError(f"missing argument {name!r} for function {call.name}", self.filename, call.line)
+            cache_key = (call.name, tuple(_value_cache_key(value) for value in function_locals.values()))
+            if cache_key in self._function_cache:
+                return self._function_cache[cache_key]
             self._function_stack.append(call.name)
             try:
-                return self._eval(function.expr, function_locals, {}, {}, resolving)
+                result = self._eval(function.expr, function_locals, {}, {}, resolving)
             finally:
                 self._function_stack.pop()
+            self._function_cache[cache_key] = result
+            return result
         if call.name == "len":
             if len(values) != 1 or not isinstance(values[0], (list, Expr)):
                 raise ScadError("len() expects one array or string", self.filename, call.line)
@@ -434,6 +523,8 @@ class _Compiler:
         numbers = [_number(value, call.line, self.filename) for value in values]
         deps = frozenset().union(*(value.deps for value in values))
         text = f"{call.name}({', '.join(value.text for value in values)})"
+        if call.name == "pow" and len(values) == 2:
+            text = f"({values[0].text} ^ {values[1].text})"
         try:
             if call.name == "floor" and len(numbers) == 1:
                 result = math.floor(numbers[0])
@@ -451,6 +542,12 @@ class _Compiler:
                 result = math.cos(math.radians(numbers[0]))
             elif call.name == "tan" and len(numbers) == 1:
                 result = math.tan(math.radians(numbers[0]))
+            elif call.name == "atan2" and len(numbers) == 2:
+                result = math.degrees(math.atan2(numbers[0], numbers[1]))
+            elif call.name == "pow" and len(numbers) == 2:
+                if abs(numbers[1]) > self._MAX_POWER_EXPONENT:
+                    raise ScadError("power exponent too large", self.filename, call.line)
+                result = numbers[0] ** numbers[1]
             elif call.name == "min" and numbers:
                 result = min(numbers)
             elif call.name == "max" and numbers:
@@ -515,6 +612,15 @@ class _Compiler:
         return _number_result(value, text, deps)
 
     def _vector_binary(self, operator: str, left: Any, right: Any, line: int) -> list[Any]:
+        if operator == "*" and isinstance(left, list) and isinstance(right, Expr):
+            return [self._vector_binary(operator, item, right, line) if isinstance(item, list)
+                    else self._binary(operator, item, right, line) for item in left]
+        if operator == "*" and isinstance(left, Expr) and isinstance(right, list):
+            return [self._vector_binary(operator, left, item, line) if isinstance(item, list)
+                    else self._binary(operator, left, item, line) for item in right]
+        if operator == "/" and isinstance(left, list) and isinstance(right, Expr):
+            return [self._vector_binary(operator, item, right, line) if isinstance(item, list)
+                    else self._binary(operator, item, right, line) for item in left]
         if operator not in {"+", "-"} or not isinstance(left, list) or not isinstance(right, list):
             raise ScadError("vector arithmetic requires two equally sized vectors", self.filename, line)
         if len(left) != len(right):
@@ -540,27 +646,71 @@ class _Compiler:
         line: int,
     ) -> list[Any]:
         result: list[Any] = []
+        stable_cache: dict[str, Any] = {}
 
-        def visit(index: int, scope: dict[str, Any]) -> None:
+        def eval_binding(expression: ExprAst, scope: dict[str, Any]) -> Any:
+            safe_names = {
+                name for name, assignment in assignments.items()
+                if not self._assignment_free_names(assignment,assignments,scope) & scope.keys()
+            }
+            eval_cache = dict(cache)
+            eval_cache.update(stable_cache)
+            for name in assignments:
+                if name not in safe_names:
+                    eval_cache.pop(name, None)
+            value = self._eval(expression, scope, assignments, eval_cache, resolving)
+            for name in safe_names:
+                if name in eval_cache:
+                    stable_cache[name] = eval_cache[name]
+            return value
+
+        def visit(index: int, scope: dict[str, Any], splice_depth: int = 0) -> None:
             if self._comprehension_expanded >= self._MAX_COMPREHENSION_EXPANDED:
                 raise ScadError("list comprehension expansion limit exceeded", self.filename, line)
             if index == len(clauses):
                 self._comprehension_expanded += 1
-                result.append(self._eval(body, scope, assignments, dict(cache), resolving))
+                value = self._eval(body, scope, assignments, dict(cache), resolving)
+                # One ``each`` splices the body array into this comprehension's
+                # result. Additional markers flatten one more array level.
+                for _ in range(max(0, splice_depth - 1)):
+                    if not isinstance(value, list):
+                        raise ScadError("each requires an array expression", self.filename, line)
+                    flattened: list[Any] = []
+                    for item in value:
+                        if isinstance(item, list):
+                            flattened.extend(item)
+                        else:
+                            flattened.append(item)
+                    value = flattened
+                if splice_depth:
+                    if not isinstance(value, list):
+                        raise ScadError("each requires an array expression", self.filename, line)
+                    result.extend(value)
+                else:
+                    result.append(value)
                 return
             kind, values = clauses[index]
             if kind == "let":
                 let_scope = dict(scope)
                 for name, value_ast in values:
                     let_scope[name] = self._eval(value_ast, let_scope, assignments, dict(cache), resolving)
-                visit(index + 1, let_scope)
+                visit(index + 1, let_scope, splice_depth)
+                return
+            if kind == "if":
+                condition = self._scalar(self._eval(values, scope, assignments, dict(cache), resolving), line)
+                self._rebuild_parameters.update(condition.deps)
+                if bool(condition.value):
+                    visit(index + 1, scope, splice_depth)
+                return
+            if kind == "each":
+                visit(index + 1, scope, splice_depth + 1)
                 return
             def bind(rest: list[tuple[str, ExprAst]], current: dict[str, Any]) -> None:
                 if not rest:
-                    visit(index + 1, current)
+                    visit(index + 1, current, splice_depth)
                     return
                 bind_name, bind_ast = rest[0]
-                bind_value = self._eval(bind_ast, current, assignments, dict(cache), resolving)
+                bind_value = eval_binding(bind_ast, current)
                 self._rebuild_parameters.update(_deps_of(bind_value))
                 if isinstance(bind_value, _RangeValue):
                     bind_items = bind_value.values
@@ -782,11 +932,14 @@ class _Compiler:
                 return any(item is not None and expression_has_branch(item) for item in expression.value)
             if expression.kind == "comprehension":
                 clauses, body = expression.value
-                return any(
-                    expression_has_branch(value)
-                    for _, values in clauses
-                    for _, value in values
-                ) or expression_has_branch(body)
+                for kind, values in clauses:
+                    if kind in {"for", "let"} and any(
+                        expression_has_branch(value) for _, value in values
+                    ):
+                        return True
+                    if kind == "if" and expression_has_branch(values):
+                        return True
+                return expression_has_branch(body)
             if expression.kind == "function":
                 return any(expression_has_branch(arg) for _, arg in expression.value.args)
             return False
@@ -855,18 +1008,21 @@ class _Compiler:
                 raise ScadError(f"unknown module argument {next(iter(named))!r}", self.filename, call.line)
             self._module_stack.append(call.name)
             try:
-                return self._compile_statements(module.body, module_locals, {}, template_mode)
+                nodes = self._compile_statements(module.body, module_locals, {}, template_mode)
+                return [Node('union',{},nodes,call.line)] if len(nodes)>1 else nodes
             finally:
                 self._module_stack.pop()
         if call.name not in self._PRIMITIVES:
             raise ScadError(f"unsupported construct {call.name!r}", self.filename, call.line)
-        if call.name in {"union", "difference", "intersection"}:
+        if call.name in {"union", "difference", "intersection", "hull"}:
             args = self._arguments(call, set(), [], locals_, assignments, cache)
             if call.body is None:
                 raise ScadError(f"{call.name} requires a block", self.filename, call.line)
             children = self._compile_statements(call.body, dict(locals_), dict(assignments), template_mode)
             return [Node(call.name, args, children, call.line)]
-        if call.body is not None and call.name not in {"translate", "rotate", "scale", "linear_extrude", "offset", "rotate_extrude"}:
+        if call.body is not None and call.name not in {
+            "translate", "rotate", "scale", "multmatrix", "linear_extrude", "offset", "rotate_extrude"
+        }:
             raise ScadError(f"{call.name} cannot have a child block", self.filename, call.line)
         args = self._primitive_args(call, locals_, assignments, cache)
         children = []
@@ -967,9 +1123,15 @@ class _Compiler:
             args.setdefault("twist", _literal(0))
             args.setdefault("scale", _literal(1))
         elif name == "offset":
-            args = self._arguments(call, {"r"}, ["r"], locals_, assignments, cache)
-            if "r" not in args:
-                raise ScadError("offset requires r", self.filename, call.line)
+            args = self._arguments(call, {"r", "delta"}, ["r"], locals_, assignments, cache)
+            if "r" in args and "delta" in args:
+                raise ScadError("offset cannot use both r and delta", self.filename, call.line)
+            if "r" not in args and "delta" not in args:
+                raise ScadError("offset requires r or delta", self.filename, call.line)
+        elif name == "multmatrix":
+            args = self._arguments(call, {"m"}, ["m"], locals_, assignments, cache)
+            if "m" not in args:
+                raise ScadError("multmatrix requires m", self.filename, call.line)
         elif name == "polygon":
             args = self._arguments(
                 call, {"points", "paths", "convexity", "$fn"}, ["points", "paths"], locals_, assignments, cache
@@ -1045,6 +1207,17 @@ def _literal(value: object, text: str | None = None) -> Expr:
     else:
         raise TypeError(f"unsupported literal {value!r}")
     return Expr(value, default if text is None else text, frozenset())
+
+
+def _value_cache_key(value: object) -> object:
+    """Return a stable key for pure SCAD function argument values."""
+    if isinstance(value, Expr):
+        return ("expr", type(value.value).__name__, value.value, value.text, tuple(sorted(value.deps)))
+    if isinstance(value, _RangeValue):
+        return ("range", _value_cache_key(value.start), _value_cache_key(value.step), _value_cache_key(value.end))
+    if isinstance(value, list):
+        return ("list", tuple(_value_cache_key(item) for item in value))
+    return (type(value).__name__, value)
 
 
 def _number(value: Expr, line: int, filename: str) -> int | float:

@@ -1,5 +1,7 @@
 # scad2fusion
 
+Dustpan có fixture và phép dựng native theo miền nhận dạng, giữ giới hạn block lặp 5 lần. Sinh thư mục bằng `uv run scad2fusion tests/fixtures/dustpan.scad --output output/DustpanNew`; đọc [kiểm chứng dustpan và ngưỡng riêng của source](docs/dustpan-validation.md) trước khi dùng kết quả. Các contour khôi phục/offset và shell numeric cần sinh lại khi đổi kích thước.
+
 Converter đọc source OpenSCAD và sinh Python chạy trong Autodesk Fusion. Bản đầu được kiểm tra với khay bông tắm, các SCAD độc lập và thay đổi tham số trong Fusion 2705.1.30.
 
 ## Cài và chuyển đổi

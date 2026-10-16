@@ -307,6 +307,27 @@ class FrontendTests(unittest.TestCase):
         translate = next(node for node in walk(program.geometry) if node.op == "translate")
         self.assertEqual([item.value for item in translate.args["v"]], [3, 3])
 
+    def test_local_array_cache_tracks_transitive_module_parameters(self):
+        program=compile_source('module block(r){a=r*2;b=[a,a+1];cube([b[0],b[1],1]);} block(2);block(5);')
+        cubes=[n for n in walk(program.geometry) if n.op=='cube']
+        self.assertEqual([[v.value for v in n.args['size']] for n in cubes],[[4,5,1],[10,11,1]])
+
+    def test_special_resolution_reference_is_literal(self):
+        program=compile_source('$fn=24;cube([$fn/2,1,1]);')
+        cube=next(n for n in walk(program.geometry) if n.op=='cube')
+        self.assertNotIn('$',cube.args['size'][0].text)
+
+    def test_module_multiple_solids_remain_one_boolean_operand(self):
+        program=compile_source('module pair(){cube(2);translate([2,0,0])cube(2);} intersection(){pair();cube(3);}')
+        intersection=next(n for n in walk(program.geometry) if n.op=='intersection')
+        self.assertEqual(len(intersection.children),2)
+        self.assertEqual(intersection.children[0].op,'union')
+
+    def test_comprehension_binding_cache_tracks_transitive_loop_dependency(self):
+        program=compile_source('module block(){a=i*2;b=a+1;p=[for(i=[1:2],j=[0:b]) [i,j]];cube([len(p),1,1]);}block();')
+        cube=next(n for n in walk(program.geometry) if n.op=='cube')
+        self.assertEqual(cube.args['size'][0].value,10)
+
     def test_builtin_concat_norm_and_str_and_string_override(self):
         program = compile_source(
             'label = "layout"; a = concat([[3, 4]], [[0, 0]]); '
@@ -441,6 +462,76 @@ class FrontendTests(unittest.TestCase):
                 "a=[for (i=[0:9999]) [for (j=[0:9999]) i+j]]; cube(len(a));",
                 filename="nested-limit.scad",
             )
+
+    def test_comprehension_each_splices_nested_values(self):
+        program = compile_source(
+            "points=[for (i=[0:2]) each [[i,0],[i,1]]]; polygon(points);",
+            filename="each.scad",
+        )
+        polygon = next(node for node in walk(program.geometry) if node.op == "polygon")
+        self.assertEqual(len(polygon.args["points"]), 6)
+        self.assertEqual([point[0].value for point in polygon.args["points"]], [0, 0, 1, 1, 2, 2])
+
+    def test_comprehension_each_requires_an_array(self):
+        with self.assertRaisesRegex(ScadError, r"each requires an array expression"):
+            compile_source("values=[for (i=[0:1]) each i];", filename="each-scalar.scad")
+
+    def test_comprehension_if_filter_preserves_dependency_and_nested_let(self):
+        program = compile_source(
+            "n=4; points=[for (i=[0:n]) let(x=i*2) if(x>2) [x,0]]; polygon(points);",
+            filename="comprehension-filter.scad",
+        )
+        polygon = next(node for node in walk(program.geometry) if node.op == "polygon")
+        self.assertEqual([point[0].value for point in polygon.args["points"]], [4, 6, 8])
+        self.assertIn("n", program.rebuild_parameters)
+
+    def test_multmatrix_is_preserved_as_transform_ir(self):
+        program = compile_source(
+            "multmatrix([[0,0,1,0],[1,0,0,0],[0,1,0,0],[0,0,0,1]]) linear_extrude(1) square(2);",
+            filename="multmatrix.scad",
+        )
+        matrix = next(node for node in walk(program.geometry) if node.op == "multmatrix")
+        self.assertEqual(matrix.args["m"][0][2].value, 1)
+        self.assertEqual(matrix.children[0].op, "linear_extrude")
+
+    def test_hull_is_preserved_as_csg_ir(self):
+        program = compile_source(
+            "linear_extrude(1) hull() { circle(1); translate([3,0]) circle(1); }",
+            filename="hull.scad",
+        )
+        hull = next(node for node in walk(program.geometry) if node.op == "hull")
+        self.assertEqual([node.op for node in hull.children], ["circle", "translate"])
+
+    def test_offset_delta_is_preserved_as_symbolic_ir(self):
+        program = compile_source(
+            "linear_extrude(1) offset(delta=-0.2) polygon([[0,0],[3,0],[3,3],[0,3]]);",
+            filename="offset-delta.scad",
+        )
+        offset = next(node for node in walk(program.geometry) if node.op == "offset")
+        self.assertEqual(offset.args["delta"].value, -0.2)
+        self.assertEqual(offset.args["delta"].text, "-0.2")
+
+    def test_pow_builtin_keeps_symbolic_power_expression(self):
+        program = compile_source("x=3; cube(pow(x,2));", filename="pow.scad")
+        cube = next(node for node in walk(program.geometry) if node.op == "cube")
+        self.assertEqual(cube.args["size"].text, "(x ^ 2)")
+        self.assertEqual(cube.args["size"].deps, frozenset({"x"}))
+
+    def test_vector_scalar_multiplication_preserves_symbolic_components(self):
+        program = compile_source(
+            "r=3; p=[1,2]; translate(r*p) cube(1);",
+            filename="vector-scale.scad",
+        )
+        translate = next(node for node in walk(program.geometry) if node.op == "translate")
+        self.assertEqual([item.value for item in translate.args["v"]], [3, 6])
+        self.assertEqual([item.deps for item in translate.args["v"]], [frozenset({"r"})] * 2)
+
+    def test_special_fn_reference_is_frozen_to_its_literal_value(self):
+        program = compile_source("$fn=24; circle(2);", filename="special-fn.scad")
+        circle = next(node for node in walk(program.geometry) if node.op == "circle")
+        self.assertEqual(circle.args["fn"].value, 24)
+        self.assertEqual(circle.args["fn"].text, "24")
+        self.assertEqual(circle.args["fn"].deps, frozenset())
 
     def test_unknown_argument_and_unsupported_construct_have_location(self):
         with self.assertRaisesRegex(ScadError, r"args\.scad:1.*unknown argument"):

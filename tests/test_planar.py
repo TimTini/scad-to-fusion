@@ -38,9 +38,104 @@ class ScalarTests(unittest.TestCase):
 
 
 class PlanarRegionTests(unittest.TestCase):
+    def test_uniform_planar_scale_updates_circle_radius(self):
+        for factor in (2,-2):
+            region=Region(node('scale',{'v':[Scalar(factor),Scalar(factor)]},[node('circle',{'r':Scalar(5)})]))
+            self.assertEqual(region.curves[0]['radius'].value,10)
+
+    def test_polygon_recovers_sampled_circular_run_as_arc_and_keeps_line_endpoints(self):
+        points = [point(0, 0), point(4, 0)]
+        for index in range(13):
+            angle = -90 + 7.5 * index
+            theta = math.radians(angle)
+            points.append(point(4 + 4 * math.cos(theta), 4 + 4 * math.sin(theta)))
+        points.extend([point(8, 8), point(0, 8)])
+
+        region = Region(node("polygon", {"points": points}))
+
+        self.assertEqual([curve["kind"] for curve in region.curves], ["line", "arc", "line", "line", "line"])
+        self.assertEqual(region.curves[0]["start"][0].value, 0)
+        self.assertEqual(region.curves[1]["start"][0].value, 4)
+        self.assertEqual(region.curves[1]["end"][0].value, 8)
+        self.assertAlmostEqual(region.curves[1]["radius"].value, 4)
+        self.assertTrue(region.requires_rebuild)
+        for first,second in zip(region.curves,region.curves[1:]+region.curves[:1]):
+            self.assertLess(math.dist([v.value for v in first['end']],[v.value for v in second['start']]),1e-8)
+
+    def test_polygon_recovers_full_sampled_circle_as_one_circle(self):
+        points = [point(3 + 5 * math.cos(math.radians(angle)), 2 + 5 * math.sin(math.radians(angle)))
+                  for angle in range(0, 360, 5)]
+
+        region = Region(node("polygon", {"points": points}))
+
+        self.assertEqual(len(region.curves), 1)
+        self.assertEqual(region.curves[0]["kind"], "circle")
+        self.assertAlmostEqual(region.curves[0]["center"][0].value, 3)
+        self.assertAlmostEqual(region.curves[0]["center"][1].value, 2)
+        self.assertAlmostEqual(region.curves[0]["radius"].value, 5)
+
+    def test_polygon_keeps_coarse_circle_samples_as_lines_when_sagitta_is_too_large(self):
+        points = [point(0, 0), point(2, 0)]
+        for angle in (-90, -60, -30, 0):
+            theta = math.radians(angle)
+            points.append(point(2 + 2 * math.cos(theta), 2 + 2 * math.sin(theta)))
+        points.extend([point(4, 4), point(0, 4)])
+
+        region = Region(node("polygon", {"points": points}))
+
+        self.assertTrue(all(curve["kind"] == "line" for curve in region.curves))
+
+    def test_hull_of_translated_equal_radius_circles_is_exact_capsule(self):
+        circle = node("circle", {"r": expr(2)})
+        region = Region(node("hull", children=[
+            node("translate", {"v": point(0, 0)}, [circle]),
+            node("translate", {"v": point(10, 0)}, [circle]),
+        ]))
+
+        self.assertEqual([curve["kind"] for curve in region.curves].count("line"), 2)
+        self.assertEqual([curve["kind"] for curve in region.curves].count("arc"), 2)
+        self.assertTrue(region.requires_rebuild)
+        self.assertEqual(region.bounds, (-2.0, -2.0, 12.0, 2.0))
+        self.assertTrue(region.contains(5, 1.9))
+        self.assertFalse(region.contains(5, 2.1))
+
+    def test_hull_rejects_nonuniform_circle_radii(self):
+        with self.assertRaisesRegex(ValueError, "equal-radius circles"):
+            Region(node("hull", children=[
+                node("translate", {"v": point(0, 0)}, [node("circle", {"r": expr(2)})]),
+                node("translate", {"v": point(10, 0)}, [node("circle", {"r": expr(3)})]),
+            ]))
+
+    def test_hull_of_three_circles_has_tangent_lines_and_vertex_arcs(self):
+        circle = node("circle", {"r": expr(1)})
+        region = Region(node("hull", children=[
+            node("translate", {"v": point(0, 0)}, [circle]),
+            node("translate", {"v": point(10, 0)}, [circle]),
+            node("translate", {"v": point(3, 5)}, [circle]),
+        ]))
+
+        self.assertEqual([curve["kind"] for curve in region.curves].count("line"), 3)
+        self.assertEqual([curve["kind"] for curve in region.curves].count("arc"), 3)
+        for current, following in zip(region.curves, region.curves[1:] + region.curves[:1]):
+            self.assertEqual(current["end"], following["start"])
+
+    def test_negative_delta_offsets_a_simple_concave_polygon(self):
+        polygon = node("polygon", {"points": [
+            point(0, 0), point(10, 0), point(10, 10), point(6, 10),
+            point(6, 4), point(4, 4), point(4, 10), point(0, 10),
+        ]})
+
+        region = Region(node("offset", {"delta": expr(-1)}, [polygon]))
+
+        self.assertEqual(region.bounds, (1.0, 1.0, 9.0, 9.0))
+        self.assertTrue(region.requires_rebuild)
+        self.assertTrue(region.contains(2, 2))
+        self.assertFalse(region.contains(5, 5))
+
     def test_square_has_four_lines_bounds_and_membership(self):
         region = Region(node("square", {"size": [expr(20), expr(10)], "center": expr(True)}))
 
+        self.assertFalse(region.requires_rebuild)
         self.assertEqual(len(region.curves), 4)
         self.assertTrue(all(curve["kind"] == "line" for curve in region.curves))
         self.assertEqual(region.bounds, (-10.0, -5.0, 10.0, 5.0))
@@ -129,6 +224,12 @@ class PlanarRegionTests(unittest.TestCase):
                 {"h": expr(5), "r1": expr(5), "r2": expr(5), "center": expr(False), "fn": expr(8)},
             )
         )
+
+        self.assertEqual(len(region.curves), 8)
+        self.assertTrue(all(curve["kind"] == "line" for curve in region.curves))
+
+    def test_low_fn_circle_remains_polygon_even_when_sagitta_is_small(self):
+        region = Region(node("circle", {"r": expr(0.1), "fn": expr(8)}))
 
         self.assertEqual(len(region.curves), 8)
         self.assertTrue(all(curve["kind"] == "line" for curve in region.curves))

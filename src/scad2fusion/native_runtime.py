@@ -6,11 +6,14 @@ import math
 from pathlib import Path
 import traceback
 import ast
+import re
 
 from .planar import Scalar, Region
 from .units import fusion_expression, expression_ast
 from .native_geometry import revolve_profile_frame, revolve_placement, polyhedron_mesh, create_polyhedron_body, revolve_corner_edge, helical_plan, revolve_round_plan
 from .helical import create_helical_sweep
+from .layered import layered_plan
+from .native_layers import create_layered_body, offset_cove_radius, translated_profile_suffix, sector_profile
 
 
 def _s(value):
@@ -55,6 +58,22 @@ class Frame:
             values = [_s(v) for v in args['v']]
             values += [Scalar(0)] * (3 - len(values))
             return Frame(self.matrix, self.point(values))
+        if op == 'multmatrix':
+            values = args['m']
+            if not isinstance(values, list) or len(values) != 4 or any(not isinstance(row,list) or len(row)!=4 for row in values):
+                raise ValueError('multmatrix requires a 4 by 4 affine matrix')
+            values = [[_s(v) for v in row] for row in values]
+            if any(not math.isfinite(v.value) for row in values for v in row) or any(abs(values[3][j].value-(1 if j==3 else 0))>1e-12 for j in range(4)):
+                raise ValueError('multmatrix requires a finite affine matrix')
+            local = [[values[i][j].value for j in range(3)] for i in range(3)]
+            determinant = sum(local[0][j]*(local[1][(j+1)%3]*local[2][(j+2)%3]-local[1][(j+2)%3]*local[2][(j+1)%3]) for j in range(3))
+            if abs(determinant)<1e-12: raise ValueError('multmatrix must be nonsingular')
+            for a,b in ((0,1),(0,2),(1,2)):
+                lengths = math.sqrt(sum(row[a]**2 for row in local)*sum(row[b]**2 for row in local))
+                if abs(sum(row[a]*row[b] for row in local)) > 1e-9*lengths:
+                    raise ValueError('multmatrix requires orthogonal basis vectors; shear is unsupported')
+            matrix = [[sum(self.matrix[i][k]*local[k][j] for k in range(3)) for j in range(3)] for i in range(3)]
+            return Frame(matrix,self.point([values[i][3] for i in range(3)]))
         if op == 'scale':
             values = args['v'] if isinstance(args['v'], list) else [args['v']] * 3
             if len(values) not in (2, 3): raise ValueError('Scale vector must have two or three coordinates')
@@ -129,7 +148,7 @@ def pattern_spec(node, frame):
         return None
 
     def leaf(item, current):
-        if item['op'] in ('translate', 'rotate', 'scale') and len(item['children']) == 1:
+        if item['op'] in ('translate', 'rotate', 'scale', 'multmatrix') and len(item['children']) == 1:
             return leaf(item['children'][0], current.transformed(item))
         if item['op'] == 'union' and len(item['children']) == 1:
             return leaf(item['children'][0], current)
@@ -195,11 +214,11 @@ def validate_program(program):
         op = node['op']
         operations.add(op)
         try:
-            if op in ('translate', 'rotate', 'scale'):
+            if op in ('translate', 'rotate', 'scale', 'multmatrix'):
                 if op != 'translate': deps(node['args'])
                 frame = frame.transformed(node)
                 for child in node['children']: walk(child, frame, cutter)
-            elif op in ('union', 'difference', 'for'):
+            elif op in ('union', 'difference', 'intersection', 'for'):
                 if op == 'difference' and not node['children']:
                     raise ValueError('Empty solid difference is outside supported output; supply a target')
                 if op == 'for':
@@ -211,18 +230,32 @@ def validate_program(program):
                 for index, child in enumerate(node['children']):
                     walk(child, frame, cutter or (op == 'difference' and index > 0))
             elif op == 'polyhedron':
-                polyhedron_mesh(node['args'], frame)
+                layers = layered_plan(node['args'])
+                if not layers: polyhedron_mesh(node['args'], frame)
                 plan = helical_plan(node['args'], frame)
+                layer_kind = ('layered_sector_revolve' if layers and sector_profile(layers,frame) else
+                              'offset_cove_fillet' if layers and offset_cove_radius(layers,frame) else
+                              'translated_profile_sweep' if layers and translated_profile_suffix(layers) is not None else
+                              'layered_extrude' if layers and layers['mode']=='extrude' else 'bounded_layered_loft')
+                if layers and layer_kind!='layered_sector_revolve':
+                    normal=[frame.matrix[i][layers['axis']] for i in range(3)]
+                    if sum(abs(v)>1e-9 for v in normal)!=1:
+                        raise ValueError('Layered profiles require a global-axis-aligned section normal in this version')
                 representations.append({'line':node.get('line',1), 'source':'polyhedron',
-                    'native':'smooth_helical_sweep' if plan else 'faceted_base_feature',
+                    'native':'smooth_helical_sweep' if plan else (layer_kind if layers else 'faceted_base_feature'),
                     'source_faces':len(node['args']['faces']),
-                    'sections':len(plan['sections']) if plan else 0})
+                    'sections':len(plan['sections']) if plan else (len(layers['sections']) if layers else 0),
+                    'layered_profile_plan': {k:layers[k] for k in ('source_sections','selected_indices','max_profile_interpolation_error','error_scope')} if layers else None})
                 deps(node['args'].get('points', []))
                 rebuild.update(node['args'].get('rebuild_dependencies', []))
                 rebuild.update(n.id for value in frame.origin for n in ast.walk(expression_ast(value.text))
                                if isinstance(n,ast.Name) and n.id in program.get('parameters',{}))
                 if plan:
                     approximations.add('Recognized helix uses at most five round-profile Sweeps split at source radius-law corners, sharing one path sketch; path approximation is within 0.001 mm. Sweep orientation and polygon-to-circle differences require mesh comparison; geometry changes require regeneration')
+                elif layers:
+                    if layer_kind=='offset_cove_fillet': approximations.add('Circular offset cove uses a native Fillet with declared 0.01 mm radius reduction to avoid collapsed concave source arcs; validate source mesh')
+                    if layer_kind=='translated_profile_sweep': approximations.add('Translated profile suffix uses parallel Sweep over recovered path, with bounded prefix Loft; validate source mesh')
+                    approximations.add('Recognized layered shell uses at most five profiles and a separate constant-section tail; numeric rebuilt profiles and interpolated loft require source mesh comparison')
                 else:
                     approximations.add('Polyhedron uses original planar faces as a fixed native BRep base feature; regenerate to change its geometry')
             elif op == 'rotate_extrude':
@@ -246,6 +279,12 @@ def validate_program(program):
             else:
                 resolution_dependencies(node)
                 region, height, _ = _extrusion(node)
+                if region.requires_rebuild:
+                    def profile_dependencies(child):
+                        deps(child['args'])
+                        for grandchild in child['children']: profile_dependencies(grandchild)
+                    profile_dependencies(node)
+                    approximations.add('Recovered or offset planar contours are numeric at Run and require regeneration when their source parameters change')
                 if height.value <= 0: raise ValueError('Extrusion height must be positive')
                 normal = [frame.matrix[i][2] for i in range(3)]
                 if sum(abs(v) > 1e-9 for v in normal) != 1:
@@ -281,19 +320,23 @@ class NativeBuilder:
         self.patterns = []
         self.stage = 'parameters'
         for name in program['parameter_order']:
+            self.stage = 'parameter '+name
             unit = 'mm' if program['dimensions'][name] else ''
-            design.userParameters.add(name, core.ValueInput.createByString(program['parameter_expressions'][name]), unit,
+            design.userParameters.add(program.get('fusion_parameter_names',{}).get(name,name), core.ValueInput.createByString(program['parameter_expressions'][name]), unit,
                                       'SCAD input/derived expression; keep formula dependencies')
 
     def expression(self, value, dimension=1):
-        return fusion_expression(_s(value).text, self.program['dimensions'], dimension)
+        text = fusion_expression(_s(value).text, self.program['dimensions'], dimension)
+        names = self.program.get('fusion_parameter_names',{})
+        return re.sub(r'\b[A-Za-z_]\w*\b',lambda match:names.get(match[0],match[0]),text)
 
     def collection(self, items):
         result = self.core.ObjectCollection.create()
         for item in items: result.add(item)
         return result
 
-    def sketch_region(self, region, frame):
+    def sketch_region(self, region, frame, fixed=False):
+        fixed = fixed or region.requires_rebuild
         core, comp = self.core, self.comp
         axis = next(i for i in range(3) if abs(frame.matrix[i][2]) > 1e-9)
         base = [comp.yZConstructionPlane, comp.xZConstructionPlane, comp.xYConstructionPlane][axis]
@@ -327,7 +370,7 @@ class NativeBuilder:
 
         def vertex(point):
             x, y = mapped(point)
-            key = (x.text, y.text)
+            key = (round(x.value,9),round(y.value,9)) if fixed else (x.text,y.text)
             if key not in point_cache:
                 if abs(x.value) < 1e-10 and abs(y.value) < 1e-10 and x.text == '0' and y.text == '0':
                     point_cache[key] = sketch.originPoint
@@ -354,6 +397,12 @@ class NativeBuilder:
                     core.Point3D.create(center[0].value/10, center[1].value/10, 0), curve['radius'].value*radius_scale/10)
                 dimensions.append((circle.centerSketchPoint, center[0], center[1]))
                 radial.append((circle, curve['radius'] * radius_scale))
+        if fixed:
+            for curve in sketch.sketchCurves: curve.isFixed = True
+            selected = self.select_profiles(sketch,region,frame)
+            if not sketch.isFullyConstrained:
+                raise RuntimeError('Unconstrained fixed section: '+sketch.name)
+            return sketch,selected,normal_values[axis]*frame.matrix[axis][2]
         coordinate_anchors = [{}, {}]
         for point, x, y in dimensions:
             for i, coordinate in enumerate((x, y)):
@@ -442,23 +491,28 @@ class NativeBuilder:
         return feature
 
     def join(self, bodies):
-        merged = []
-        for body in bodies:
-            index = 0
-            while index < len(merged):
-                target = merged[index]
-                distance = self.core.Application.get().measureManager.measureMinimumDistance(target, body).value
-                if distance > 1e-7:
-                    index += 1
-                    continue
-                inp = self.comp.features.combineFeatures.createInput(target, self.collection([body]))
-                inp.operation = self.fusion.FeatureOperations.JoinFeatureOperation
-                feature = self.comp.features.combineFeatures.add(inp)
-                feature.name = 'SCAD union'
-                body = feature.bodies.item(0)
-                merged.pop(index)
-                index = 0
-            merged.append(body)
+        # Connected operands share one Combine instead of one feature per body.
+        pending=list(bodies)
+        merged=[]
+        measure=self.core.Application.get().measureManager
+        while pending:
+            group=[pending.pop(0)]
+            index=0
+            while index<len(pending):
+                body=pending[index]
+                if any(measure.measureMinimumDistance(member,body).value<=1e-7 for member in group):
+                    group.append(pending.pop(index))
+                    index=0
+                else:
+                    index+=1
+            if len(group)==1:
+                merged.extend(group)
+                continue
+            inp=self.comp.features.combineFeatures.createInput(group[0],self.collection(group[1:]))
+            inp.operation=self.fusion.FeatureOperations.JoinFeatureOperation
+            feature=self.comp.features.combineFeatures.add(inp)
+            feature.name='SCAD union'
+            merged.extend(feature.bodies)
         return merged
 
     def revolve(self, node, frame):
@@ -524,6 +578,9 @@ class NativeBuilder:
 
     def polyhedron(self, node, frame):
         self.stage = 'SCAD polyhedron line ' + str(node.get('line',1))
+        layers = layered_plan(node['args'])
+        if layers and not helical_plan(node['args'],frame):
+            return create_layered_body(self,layers,frame)
         points, faces = polyhedron_mesh(node['args'], frame)
         plan = helical_plan(node['args'], frame)
         if plan is not None:
@@ -543,10 +600,29 @@ class NativeBuilder:
     def build(self, node, frame=None):
         frame = frame or Frame()
         op = node['op']
-        if op in ('translate', 'rotate', 'scale'):
+        if op in ('translate', 'rotate', 'scale', 'multmatrix'):
             return self.build(_group(node['children']), frame.transformed(node))
         if op in ('union', 'for'):
             return self.join([body for child in node['children'] for body in self.build(child, frame)])
+        if op == 'intersection':
+            if not node['children']: return []
+            bodies = self.build(node['children'][0],frame)
+            for child in node['children'][1:]:
+                tools = self.build(child,frame)
+                if len(tools)!=1:
+                    raise ValueError('Solid intersection requires a connected clipping operand')
+                updated=[]
+                for target in bodies:
+                    inp = self.comp.features.combineFeatures.createInput(target,self.collection(tools))
+                    inp.operation = self.fusion.FeatureOperations.IntersectFeatureOperation
+                    inp.isKeepToolBodies = True
+                    feature = self.comp.features.combineFeatures.add(inp)
+                    feature.name = 'SCAD solid intersection'
+                    updated.extend(body for body in feature.bodies if body not in tools)
+                for tool in tools:
+                    self.comp.features.removeFeatures.add(tool)
+                bodies = updated
+            return bodies
         if op == 'difference':
             if not node['children']: return []
             bodies = self.build(node['children'][0], frame)
@@ -557,7 +633,7 @@ class NativeBuilder:
         return list(self.extrude(node, frame).bodies)
 
     def cut(self, node, frame, targets):
-        if node['op'] in ('translate', 'rotate', 'scale'):
+        if node['op'] in ('translate', 'rotate', 'scale', 'multmatrix'):
             return self.cut(_group(node['children']), frame.transformed(node), targets)
         if node['op'] == 'for' and self.pattern_cut(node, frame, targets): return
         if node['op'] in ('union', 'for'):
@@ -566,7 +642,7 @@ class NativeBuilder:
                 self.extrude(batch[0],batch[1],targets)
                 return
             for child in node['children']: self.cut(child, frame, targets)
-        elif node['op'] in ('difference','rotate_extrude','polyhedron'):
+        elif node['op'] in ('difference','intersection','rotate_extrude','polyhedron'):
             tools = self.build(node, frame)
             for tool in tools:
                 updated = []
@@ -641,7 +717,8 @@ def native_report(design, builder):
                       [b.maxPoint.x*10,b.maxPoint.y*10,b.maxPoint.z*10]], 'volume_mm3': body.volume*1000,
                       'faces':body.faces.count, 'edges':body.edges.count})
     sketches = [{'name': s.name, 'fully_constrained': s.isFullyConstrained} for s in design.rootComponent.sketches]
-    if any(not s['fully_constrained'] for s in sketches): raise RuntimeError('Sketch lost constraints after recompute')
+    if any(not s['fully_constrained'] for s in sketches):
+        raise RuntimeError('Sketch lost constraints after recompute: '+str([s['name'] for s in sketches if not s['fully_constrained']]))
     patterns = [{'name': p.name, 'count_x': p.quantityOne.value, 'count_y': p.quantityTwo.value,
                  'spacing_one_cm': p.distanceOne.value, 'spacing_two_cm': p.distanceTwo.value}
                 for p in design.rootComponent.features.rectangularPatternFeatures]

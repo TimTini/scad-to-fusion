@@ -54,6 +54,11 @@ def infer_dimensions(definitions, usages):
                 return {key: value * node.right.value for key, value in a.items()} if a is not None else None
         if isinstance(node, ast.Call) and isinstance(node.func, ast.Name):
             parts = [dimension(arg) for arg in node.args]
+            if node.func.id == 'sqrt' and len(parts)==1:
+                return {k:v/2 for k,v in parts[0].items()} if parts[0] is not None else None
+            if node.func.id == 'atan2' and len(parts)==2:
+                if all(part is not None for part in parts): equations.append((_combine(parts[0],parts[1],-1),0))
+                return {}
             if node.func.id in ('floor', 'ceil', 'round', 'sin', 'cos', 'tan'):
                 for part in parts:
                     if part is not None:
@@ -129,6 +134,9 @@ def fusion_expression(text, dimensions, expected=1):
             if isinstance(node.op, ast.Pow) and isinstance(node.right, ast.Constant):
                 return a * node.right.value if a is not None else None
         if isinstance(node, ast.Call):
+            if node.func.id == 'sqrt':
+                value=dim(node.args[0])
+                return value/2 if value is not None else None
             if node.func.id in ('min', 'max', 'abs'):
                 return next((dim(a) for a in node.args if dim(a) is not None), None)
             return 0
@@ -165,9 +173,9 @@ def fusion_expression(text, dimensions, expected=1):
             return '(' + render(node.left, left) + ' ' + symbol + ' ' + render(node.right, right) + ')'
         if isinstance(node, ast.Call) and isinstance(node.func, ast.Name):
             name = node.func.id
-            if name not in ('min', 'max', 'abs', 'floor', 'ceil', 'round', 'sin', 'cos', 'tan'):
+            if name not in ('min', 'max', 'abs', 'floor', 'ceil', 'round', 'sin', 'cos', 'tan', 'sqrt'):
                 raise ValueError('Unsupported Fusion function ' + name)
-            argument_dim = target if name in ('min', 'max', 'abs') else 0
+            argument_dim = 2*target if name=='sqrt' else (target if name in ('min', 'max', 'abs') else 0)
             arguments = [render(a, argument_dim) for a in node.args]
             if name in ('min','max'):
                 result = arguments[0]

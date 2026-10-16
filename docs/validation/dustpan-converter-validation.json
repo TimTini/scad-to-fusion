@@ -1,0 +1,625 @@
+{
+  "scope": "Source-driven converter dustpan; numeric rebuilt contour/geometry; physical not_run",
+  "source": "tests/fixtures/dustpan.scad",
+  "source_sha256": "9f8a284a37d630a114eb1b5773fc276a5a30d8fef1dacd14db03247d8cb54db2",
+  "offline_tests_passed": 172,
+  "native_delivery": {
+    "status": "passed",
+    "fusion_version": "2705.1.30",
+    "bodies": [
+      {
+        "solid": true,
+        "bounds_mm": [
+          [
+            -103.0,
+            -100.0,
+            0.0
+          ],
+          [
+            103.0,
+            115.0,
+            250.0
+          ]
+        ],
+        "volume_mm3": 284731.1607567425,
+        "faces": 104,
+        "edges": 286
+      }
+    ],
+    "timeline_count": 132,
+    "patterns": [],
+    "sketches": [
+      {
+        "name": "SCAD profile 1",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 2",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 3",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 4",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 5",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 6",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 7",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 8",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 9",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 10",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 11",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 12",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 13",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 14",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 15",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 16",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 17",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 18",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 19",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 20",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 21",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 22",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 23",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 24",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 25",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 26",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 27",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD translated-profile path",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 28",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 29",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 30",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 31",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 32",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD translated-profile path (1)",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 33",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 34",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 35",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 36",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 37",
+        "fully_constrained": true
+      },
+      {
+        "name": "SCAD profile 38",
+        "fully_constrained": true
+      }
+    ],
+    "timeline_repetition": {
+      "repetitions": 5,
+      "block": [
+        "adsk::fusion::ConstructionPlane",
+        "adsk::fusion::Sketch"
+      ]
+    },
+    "native_features": {
+      "fillet": 2,
+      "loft": 5,
+      "sweep": 2,
+      "base": 0
+    },
+    "source_sha256": "9f8a284a37d630a114eb1b5773fc276a5a30d8fef1dacd14db03247d8cb54db2"
+  },
+  "native_variants": [
+    {
+      "status": "passed",
+      "fusion_version": "2705.1.30",
+      "bodies": [
+        {
+          "solid": true,
+          "bounds_mm": [
+            [
+              -100.0,
+              -100.0,
+              0.0
+            ],
+            [
+              100.0,
+              108.5000000000013,
+              250.0
+            ]
+          ],
+          "volume_mm3": 264189.09502337023,
+          "faces": 39,
+          "edges": 99
+        }
+      ],
+      "timeline_count": 17,
+      "patterns": [],
+      "sketches": [
+        {
+          "name": "SCAD profile 1",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 2",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 3",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 4",
+          "fully_constrained": true
+        }
+      ],
+      "timeline_repetition": {
+        "repetitions": 2,
+        "block": [
+          "adsk::fusion::ConstructionPlane",
+          "adsk::fusion::Sketch",
+          "adsk::fusion::ExtrudeFeature"
+        ]
+      },
+      "native_features": {
+        "fillet": 1,
+        "loft": 0,
+        "sweep": 0,
+        "base": 0
+      },
+      "case": "original",
+      "variant": "baseline",
+      "script_sha256": "41195b814808f70c8b09a6c53b49e626d552737ba8f47233c30dd7bae5f7689f",
+      "bounds_tolerance_mm": 0.05
+    },
+    {
+      "status": "passed",
+      "fusion_version": "2705.1.30",
+      "bodies": [
+        {
+          "solid": true,
+          "bounds_mm": [
+            [
+              -113.0,
+              -110.0,
+              0.0
+            ],
+            [
+              113.0,
+              125.0,
+              270.0
+            ]
+          ],
+          "volume_mm3": 396854.60769189213,
+          "faces": 122,
+          "edges": 322
+        }
+      ],
+      "timeline_count": 132,
+      "patterns": [],
+      "sketches": [
+        {
+          "name": "SCAD profile 1",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 2",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 3",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 4",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 5",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 6",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 7",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 8",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 9",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 10",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 11",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 12",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 13",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 14",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 15",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 16",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 17",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 18",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 19",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 20",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 21",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 22",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 23",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 24",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 25",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 26",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 27",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD translated-profile path",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 28",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 29",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 30",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 31",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 32",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD translated-profile path (1)",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 33",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 34",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 35",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 36",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 37",
+          "fully_constrained": true
+        },
+        {
+          "name": "SCAD profile 38",
+          "fully_constrained": true
+        }
+      ],
+      "timeline_repetition": {
+        "repetitions": 5,
+        "block": [
+          "adsk::fusion::ConstructionPlane",
+          "adsk::fusion::Sketch"
+        ]
+      },
+      "native_features": {
+        "fillet": 2,
+        "loft": 5,
+        "sweep": 2,
+        "base": 0
+      },
+      "case": "scaled",
+      "variant": "baseline",
+      "script_sha256": "1e4ec39cf086fab8f39bcb90e9ac5d639807af6b45593c6a046db6846ef879a2",
+      "bounds_tolerance_mm": 0.05
+    }
+  ],
+  "native_regression_cases": 15,
+  "native_regression_all_passed": true,
+  "mesh_contract": {
+    "bounds_mm": 0.05,
+    "volume_relative": 0.0025,
+    "symmetric_difference_relative": 0.005,
+    "sampled_surface_mm": 0.15,
+    "origin": "Existing dustpan source-project fidelity gates, with symmetric difference gate retained from converter",
+    "generic_comparator_surface_mm": 0.05,
+    "note": "Generic comparator statuses remain unchanged; dustpan acceptance is evaluated separately."
+  },
+  "mesh_comparisons": [
+    {
+      "reference": "dustpan.stl",
+      "candidate": "dustpan_baseline.stl",
+      "bounds_error_mm": 8.663320000344265e-15,
+      "reference_volume_mm3": 284787.1289936561,
+      "candidate_volume_mm3": 284758.59136405244,
+      "relative_volume_error": 0.00010020687979995336,
+      "symmetric_difference_mm3": 83.64947710571384,
+      "relative_symmetric_difference": 0.0002937263260502802,
+      "reference_components": 1,
+      "candidate_components": 1,
+      "candidate_watertight": true,
+      "sampled_bidirectional_surface_error_mm": 0.1179600006926838,
+      "surface_method": "All vertices plus 10000 deterministic surface samples per mesh; not exact Hausdorff proof",
+      "sections": [
+        {
+          "axis": 2,
+          "location_mm": 3.5,
+          "reference_loops": 1,
+          "candidate_loops": 1
+        },
+        {
+          "axis": 1,
+          "location_mm": 70.0,
+          "reference_loops": 1,
+          "candidate_loops": 1
+        },
+        {
+          "axis": 0,
+          "location_mm": 0.0,
+          "reference_loops": 1,
+          "candidate_loops": 1
+        }
+      ],
+      "generic_comparator_status": "failed",
+      "case": "baseline",
+      "dustpan_acceptance_status": "passed",
+      "reference_sha256": "264fdfeafb70c1867f159f24fed92b74c0215b4343dac95e5d10fdfc4f18c2b0",
+      "candidate_sha256": "cf2e62ba34e74f8f9f92f80c84512b8d3d3f42947db6b75b68cf6399f5dbca27"
+    },
+    {
+      "reference": "original-reference.stl",
+      "candidate": "original_baseline.stl",
+      "bounds_error_mm": 0.0,
+      "reference_volume_mm3": 264193.5061137884,
+      "candidate_volume_mm3": 264184.6223470103,
+      "relative_volume_error": 3.362598463823795e-05,
+      "symmetric_difference_mm3": 38.86187667954558,
+      "relative_symmetric_difference": 0.0001470962600526893,
+      "reference_components": 1,
+      "candidate_components": 1,
+      "candidate_watertight": true,
+      "sampled_bidirectional_surface_error_mm": 0.008616630179901011,
+      "surface_method": "All vertices plus 10000 deterministic surface samples per mesh; not exact Hausdorff proof",
+      "sections": [
+        {
+          "axis": 2,
+          "location_mm": 3.5,
+          "reference_loops": 1,
+          "candidate_loops": 1
+        },
+        {
+          "axis": 1,
+          "location_mm": 70.0,
+          "reference_loops": 1,
+          "candidate_loops": 1
+        },
+        {
+          "axis": 0,
+          "location_mm": 0.0,
+          "reference_loops": 1,
+          "candidate_loops": 1
+        }
+      ],
+      "generic_comparator_status": "passed",
+      "case": "original",
+      "dustpan_acceptance_status": "passed",
+      "reference_sha256": "fd42026501483a7fa30aac3e9ce2b63c4e84f86168bfd621c5d80912c9c1a765",
+      "candidate_sha256": "fee7dd3e666e61c4389a817b98a3003a7d0e9c0b0847a9fbeda9ab8351c8448b"
+    },
+    {
+      "reference": "scaled-reference.stl",
+      "candidate": "scaled_baseline.stl",
+      "bounds_error_mm": 8.663320000344265e-15,
+      "reference_volume_mm3": 396947.6450236086,
+      "candidate_volume_mm3": 396916.08060937404,
+      "relative_volume_error": 7.951782717507642e-05,
+      "symmetric_difference_mm3": 90.08734659192851,
+      "relative_symmetric_difference": 0.00022695019789466326,
+      "reference_components": 1,
+      "candidate_components": 1,
+      "candidate_watertight": true,
+      "sampled_bidirectional_surface_error_mm": 0.13004878474655546,
+      "surface_method": "All vertices plus 10000 deterministic surface samples per mesh; not exact Hausdorff proof",
+      "sections": [
+        {
+          "axis": 2,
+          "location_mm": 4.5,
+          "reference_loops": 1,
+          "candidate_loops": 1
+        },
+        {
+          "axis": 1,
+          "location_mm": 75.0,
+          "reference_loops": 1,
+          "candidate_loops": 1
+        },
+        {
+          "axis": 0,
+          "location_mm": 0.0,
+          "reference_loops": 1,
+          "candidate_loops": 1
+        }
+      ],
+      "generic_comparator_status": "failed",
+      "case": "scaled",
+      "dustpan_acceptance_status": "passed",
+      "reference_sha256": "39bf192d51dc1636a221015aa3bc07ca5a79b533964d62500f404520da81813a",
+      "candidate_sha256": "567ee60edb933ac66aad5e8ac160833add88bcaaed7d0cff2e03931c4cb17402"
+    }
+  ],
+  "delivery_script_sha256": "86f27746e539e5f05d251be959b474dd36047c54bab0a38416cea6132f8f2370",
+  "delivery_stl_sha256": "cf2e62ba34e74f8f9f92f80c84512b8d3d3f42947db6b75b68cf6399f5dbca27",
+  "delivery_mesh_reuse": "Both compared reference source mesh and candidate match final delivery: candidate whole-file SHA256 identical to baseline15; unchanged source SHA256. No numerical comparison inferred from native health.",
+  "standalone_import": "passed under Python -I -S",
+  "physical_print_fit": "not_run",
+  "parameter_updates": "Geometry recovered as numeric profiles requires regeneration; two source override configurations tested natively.",
+  "source_unchanged": "verified hash matches original and fixture",
+  "wheel_build": "passed; subsequent axis-normal preflight guard checked by focused tests",
+  "final_focused_tests_passed": 24,
+  "delivery_feature_health": {
+    "document": "DustpanConverter",
+    "revolve": 2,
+    "unhealthy_features": [],
+    "status": "passed"
+  }
+}
