@@ -1,0 +1,170 @@
+{
+  "scope": "Isolated source-frame thread solids; no full-model or physical fit claim",
+  "source": "tests/fixtures/electric-toothbrush-case.scad",
+  "source_sha256": "e32750b76ff4c8620786dfb8463b2d917a5bd6aad8b2ca1f9b32c61d5207fca4",
+  "native_probe_script_sha256": "0ae8aef55e015a911d609466a7533d06cc3c74014ed1e4e0026b272051ee5b40",
+  "native": [
+    {
+      "name": "helix-1",
+      "native_health": "passed",
+      "fidelity": "not_run",
+      "source_faces": 23042,
+      "source_sections": 481,
+      "loft_sections": 51,
+      "native_faces": 26,
+      "solid": true,
+      "volume_mm3": 665.9201075645865,
+      "seconds": 128.90487940000094,
+      "high_accuracy_volume_mm3": 665.7224847776386,
+      "profile_representation": "source_polygon",
+      "fusion_build": "2705.1.30"
+    },
+    {
+      "name": "helix-2",
+      "native_health": "passed",
+      "fidelity": "not_run",
+      "source_faces": 28802,
+      "source_sections": 601,
+      "loft_sections": 63,
+      "native_faces": 26,
+      "solid": true,
+      "volume_mm3": 890.1773810047742,
+      "seconds": 198.5317481000002,
+      "high_accuracy_volume_mm3": 890.3918718138608,
+      "profile_representation": "source_polygon",
+      "fusion_build": "2705.1.30"
+    }
+  ],
+  "comparisons": [
+    {
+      "reference": "helix-1-reference.stl",
+      "candidate": "helix-1-loft.stl",
+      "bounds_error_mm": 0.0016937255859375,
+      "reference_volume_mm3": 663.5580436595685,
+      "candidate_volume_mm3": 664.8212780785725,
+      "relative_volume_error": 0.0019037285902483644,
+      "symmetric_difference_mm3": 2.5838781317403727,
+      "relative_symmetric_difference": 0.0038939745459042377,
+      "reference_components": 1,
+      "candidate_components": 1,
+      "candidate_watertight": true,
+      "sampled_bidirectional_surface_error_mm": 0.034595348623821735,
+      "surface_method": "All vertices plus 10000 deterministic surface samples per mesh; not exact Hausdorff proof",
+      "sections": [
+        {
+          "axis": 2,
+          "location_mm": 205.0,
+          "reference_loops": 1,
+          "candidate_loops": 1
+        },
+        {
+          "axis": 1,
+          "location_mm": 0.123,
+          "reference_loops": 4,
+          "candidate_loops": 4
+        }
+      ],
+      "status": "passed",
+      "reference_sha256": "fec877d9d51af9400b240e4ee964f2d6c552f1bd4d0708eaea2f233cad24ca3d",
+      "candidate_sha256": "fa967800e240d51fa1a0afe5d7db8dec399394a5e658c815aca6b05e50b86a3b"
+    },
+    {
+      "reference": "helix-2-reference.stl",
+      "candidate": "helix-2-loft.stl",
+      "bounds_error_mm": 0.0017242431640625,
+      "reference_volume_mm3": 888.7818900747119,
+      "candidate_volume_mm3": 890.0985707869095,
+      "relative_volume_error": 0.0014814441280828745,
+      "symmetric_difference_mm3": 3.074640623176795,
+      "relative_symmetric_difference": 0.003459387120183488,
+      "reference_components": 1,
+      "candidate_components": 1,
+      "candidate_watertight": true,
+      "sampled_bidirectional_surface_error_mm": 0.03463025073546482,
+      "surface_method": "All vertices plus 10000 deterministic surface samples per mesh; not exact Hausdorff proof",
+      "sections": [
+        {
+          "axis": 2,
+          "location_mm": 75.0,
+          "reference_loops": 1,
+          "candidate_loops": 1
+        },
+        {
+          "axis": 1,
+          "location_mm": 0.123,
+          "reference_loops": 5,
+          "candidate_loops": 5
+        }
+      ],
+      "status": "passed",
+      "reference_sha256": "4c37f9ca2e0e2110b743a71ea38d6f002f8ca27e28c33bfb169abbed92ead713",
+      "candidate_sha256": "b2db0bd66bad13bfb65061143f6dcf6e59bc2c1e810620525a13d69575e6fec9"
+    }
+  ],
+  "rejected_circle_comparisons": [
+    {
+      "reference": "helix-1-reference.stl",
+      "candidate": "helix-1-loft.stl",
+      "bounds_error_mm": 0.003265380859375,
+      "reference_volume_mm3": 663.5580436595685,
+      "candidate_volume_mm3": 670.7806356061205,
+      "relative_volume_error": 0.010884642294016866,
+      "symmetric_difference_mm3": 8.074525057865078,
+      "relative_symmetric_difference": 0.012168528638931891,
+      "reference_components": 1,
+      "candidate_components": 1,
+      "candidate_watertight": true,
+      "sampled_bidirectional_surface_error_mm": 0.03407325206411346,
+      "surface_method": "All vertices plus 10000 deterministic surface samples per mesh; not exact Hausdorff proof",
+      "sections": [
+        {
+          "axis": 2,
+          "location_mm": 205.0,
+          "reference_loops": 1,
+          "candidate_loops": 1
+        },
+        {
+          "axis": 1,
+          "location_mm": 0.123,
+          "reference_loops": 4,
+          "candidate_loops": 4
+        }
+      ],
+      "status": "failed",
+      "reference_sha256": "fec877d9d51af9400b240e4ee964f2d6c552f1bd4d0708eaea2f233cad24ca3d",
+      "candidate_sha256": "09f1fbd24f67bc14877aedfaabc1cee281312579908dfae8e3a7a778351d4e2e"
+    },
+    {
+      "reference": "helix-2-reference.stl",
+      "candidate": "helix-2-loft.stl",
+      "bounds_error_mm": 0.0017242431640625,
+      "reference_volume_mm3": 888.7818900747119,
+      "candidate_volume_mm3": 898.0588689124087,
+      "relative_volume_error": 0.01043785763559714,
+      "symmetric_difference_mm3": 10.38394714948807,
+      "relative_symmetric_difference": 0.011683346910472249,
+      "reference_components": 1,
+      "candidate_components": 1,
+      "candidate_watertight": true,
+      "sampled_bidirectional_surface_error_mm": 0.034225937309618044,
+      "surface_method": "All vertices plus 10000 deterministic surface samples per mesh; not exact Hausdorff proof",
+      "sections": [
+        {
+          "axis": 2,
+          "location_mm": 75.0,
+          "reference_loops": 1,
+          "candidate_loops": 1
+        },
+        {
+          "axis": 1,
+          "location_mm": 0.123,
+          "reference_loops": 5,
+          "candidate_loops": 5
+        }
+      ],
+      "status": "failed",
+      "reference_sha256": "4c37f9ca2e0e2110b743a71ea38d6f002f8ca27e28c33bfb169abbed92ead713",
+      "candidate_sha256": "bcaa6bffe6a0361b64c3e22670c26bbe27c66ef15e2ff12871a584eec8da0508"
+    }
+  ]
+}
