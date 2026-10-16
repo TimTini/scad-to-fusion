@@ -13,6 +13,8 @@ uv run scad2fusion "tests/fixtures/tray.scad" --output "output\KhayBongTam"
 
 Output:
 
+Bàn giao trực tiếp cả thư mục output để chọn trong Fusion Scripts; không cần nén ZIP. Giữ các output đã có khi tạo phiên bản mới.
+
 ```text
 output/KhayBongTam/
   KhayBongTam.py
